@@ -67,7 +67,7 @@ serve(async (req) => {
     await Promise.all(sendPromises)
 
     return new Response('Notifications sent', { status: 200 })
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), { status: 500 })
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message || String(error) }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 })
