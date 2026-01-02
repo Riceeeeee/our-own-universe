@@ -86,7 +86,10 @@ export default function Home() {
   };
 
   const subscribeToPush = async () => {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      alert("Tính năng này yêu cầu trình duyệt hỗ trợ Push API. Nếu bạn dùng iPhone, hãy chọn 'Thêm vào màn hình chính' (Add to Home Screen) để sử dụng nhé!");
+      return;
+    }
 
     try {
       const registration = await navigator.serviceWorker.ready;
