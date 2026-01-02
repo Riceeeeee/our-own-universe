@@ -117,14 +117,14 @@ export default function Home() {
     const bucketChannel = supabase
       .channel('bucket-list')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'INSERT', schema: 'public', table: 'bucket_list' },
         (payload: { new: BucketItem }) => {
           setBucketItems((prev) => [payload.new, ...prev]);
         }
       )
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'UPDATE', schema: 'public', table: 'bucket_list' },
         (payload: { new: BucketItem }) => {
           setBucketItems((prev) =>
@@ -133,7 +133,7 @@ export default function Home() {
         }
       )
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'DELETE', schema: 'public', table: 'bucket_list' },
         (payload: { old: { id: number } }) => {
           setBucketItems((prev) => prev.filter((it) => it.id !== payload.old.id));
@@ -158,21 +158,21 @@ export default function Home() {
     const memoriesChannel = supabase
       .channel('memories-updates')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'INSERT', schema: 'public', table: 'memories' },
         (payload: { new: Memory }) => {
           setMemories((prev) => [payload.new, ...prev]);
         }
       )
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'UPDATE', schema: 'public', table: 'memories' },
         (payload: { new: Memory }) => {
           setMemories((prev) => prev.map(m => m.id === payload.new.id ? payload.new : m));
         }
       )
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'DELETE', schema: 'public', table: 'memories' },
         (payload: { old: { id: number } }) => {
           setMemories((prev) => prev.filter(m => m.id !== payload.old.id));
@@ -430,7 +430,7 @@ export default function Home() {
     const logsChannel = supabase
       .channel('mood-logs')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         { event: 'INSERT', schema: 'public', table: 'mood_logs' },
         (payload: { new: { content: string; user_name: string; created_at: string } }) => {
           setLogs((prev) => [payload.new, ...prev].slice(0, 10));
