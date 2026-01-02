@@ -8,6 +8,8 @@ import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic,
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
+const VAPID_PUBLIC_KEY = 'BDUq_avuUv7N_Wo1fRo_zYtqQnfjTak61W14G1Zgp-y1LreXJuOWRfPkQTDXoigf3zL5QZ8YQwHG4Uo1dPSpPY8';
+
 // Helper to determine mood card background color
 const getMoodCardColor = (level: number) => {
   if (level <= 30) return 'bg-blue-600/80'; // Buồn (Xanh dịu hơn một chút)
@@ -70,6 +72,64 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingMemory, setEditingMemory] = useState<Memory | null>(null);
   const [displayCount, setDisplayCount] = useState(6);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const urlBase64ToUint8Array = (base64String: string) => {
+    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  const subscribeToPush = async () => {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      
+      // Request permission
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        console.warn('Notification permission denied');
+        return;
+      }
+
+      // Check if already subscribed
+      let subscription = await registration.pushManager.getSubscription();
+
+      if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+        });
+      }
+
+      // Save subscription to Supabase
+      const user = userName ?? 'Ẩn danh';
+      await supabase.from('push_subscriptions').upsert({
+        user_name: user,
+        subscription: subscription.toJSON(),
+      }, { onConflict: 'user_name' });
+
+      setIsSubscribed(true);
+      console.log('Push notification subscribed!');
+    } catch (error) {
+      console.error('Error subscribing to push notifications:', error);
+    }
+  };
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then((registration) => {
+        console.log('Service Worker registered with scope:', registration.scope);
+      });
+    }
+  }, []);
+
   const computeElapsed = () => {
     const start = new Date(2025, 8, 15).getTime();
     const diff = Math.max(0, Date.now() - start);
@@ -542,6 +602,16 @@ export default function Home() {
           <h1 className={`text-4xl font-bold drop-shadow-md ${getTextColor(mood)}`}>
             Our Universe
           </h1>
+          <div className="flex justify-center mt-2">
+            {!isSubscribed && (
+              <button
+                onClick={subscribeToPush}
+                className="text-[10px] bg-white/20 hover:bg-white/40 text-white px-3 py-1 rounded-full border border-white/20 transition-all flex items-center gap-1"
+              >
+                🔔 Nhận thông báo từ người ấy
+              </button>
+            )}
+          </div>
           <motion.div
             animate={{
               color: ['#ffffff', '#fecaca', '#ffffff'],
