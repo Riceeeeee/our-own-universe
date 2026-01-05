@@ -13,7 +13,9 @@ export function BackgroundMusic() {
   useEffect(() => {
     // Initialize audio object if not already done
     if (!audioRef.current) {
-      audioRef.current = new Audio(MUSIC_URL);
+      audioRef.current = new Audio();
+      audioRef.current.crossOrigin = "anonymous"; // Enable CORS for caching
+      audioRef.current.src = MUSIC_URL;
       audioRef.current.loop = true;
       audioRef.current.volume = 0.3; // Default volume 30%
     }
