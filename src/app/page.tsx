@@ -12,9 +12,9 @@ const VAPID_PUBLIC_KEY = 'BDUq_avuUv7N_Wo1fRo_zYtqQnfjTak61W14G1Zgp-y1LreXJuOWRf
 
 // Helper to determine mood card background color
 const getMoodCardColor = (level: number) => {
-  if (level <= 30) return 'bg-blue-600/80'; // Buồn (Xanh dịu hơn một chút)
-  if (level <= 70) return 'bg-emerald-500/80'; // Bình thường
-  return 'bg-rose-500/80'; // Hạnh phúc
+  if (level <= 40) return 'bg-blue-600/80'; // Buồn & Hơi buồn
+  if (level <= 60) return 'bg-emerald-500/80'; // Bình thường
+  return 'bg-rose-500/80'; // Vui & Hạnh phúc
 };
 
 const getTextColor = (level: number) => {
@@ -22,10 +22,12 @@ const getTextColor = (level: number) => {
   return 'text-white';
 };
 
-const getMoodText = (level: number) => {
-  if (level <= 30) return 'Đang cảm thấy buồn...';
-  if (level <= 70) return 'Cảm thấy bình thường';
-  return 'Đang rất hạnh phúc!';
+const getMoodInfo = (level: number) => {
+  if (level <= 20) return { emoji: '☹️', text: 'Cần một cái ôm quá...' };
+  if (level <= 40) return { emoji: '😕', text: 'Hơi buồn một chút.' };
+  if (level <= 60) return { emoji: '🙂', text: 'Bình thường nè.' };
+  if (level <= 80) return { emoji: '😊', text: 'Đang thấy vui vui!' };
+  return { emoji: '🌟', text: 'Cực kỳ hạnh phúc luôn!' };
 };
 
 export default function Home() {
@@ -633,9 +635,6 @@ export default function Home() {
           >
             Quang <span className="text-rose-400">❤️</span> Linh
           </motion.div>
-          <p className={`${getTextColor(mood)}/80 text-lg animate-pulse`}>
-            {loading ? 'Đang kết nối...' : getMoodText(mood)}
-          </p>
           <p className={`${getTextColor(mood)}/90 text-sm sm:text-base`}>
             Chúng mình đã bên nhau: {elapsed.days} ngày, {elapsed.hours} giờ, {elapsed.minutes} phút, {elapsed.seconds} giây
           </p>
@@ -657,8 +656,29 @@ export default function Home() {
             onValueCommit={handleMoodCommit}
           />
           
-          <div className={`text-center text-6xl font-bold ${getTextColor(mood)} tracking-tighter`}>
-            {mood}
+          <div className="h-32 flex items-center justify-center">
+            {loading ? (
+              <p className={`${getTextColor(mood)}/80 text-lg animate-pulse`}>Đang kết nối...</p>
+            ) : (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={getMoodInfo(mood).text}
+                  initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                  transition={{ duration: 0.4, type: "spring", bounce: 0.5 }}
+                  className="flex flex-col items-center gap-2"
+                >
+                  <span className="text-6xl drop-shadow-xl filter">{getMoodInfo(mood).emoji}</span>
+                  <span className={`text-xl font-bold ${getTextColor(mood)} text-center px-4`}>
+                    {getMoodInfo(mood).text}
+                  </span>
+                  <span className={`text-sm font-medium ${getTextColor(mood)}/60`}>
+                    (Mức độ: {mood}%)
+                  </span>
+                </motion.div>
+              </AnimatePresence>
+            )}
           </div>
         </div>
 
