@@ -270,7 +270,10 @@ export default function Home() {
 
     const { error: uploadError } = await supabase.storage
       .from('memories_assets')
-      .upload(filePath, file);
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
     if (uploadError) {
       throw uploadError;
