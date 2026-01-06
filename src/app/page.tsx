@@ -796,16 +796,16 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(40px)' }}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
+          <h1 className="text-4xl font-bold drop-shadow-sm text-rose-950">
             Our Universe
           </h1>
           <div className="flex justify-center mt-2 select-none" style={{ WebkitTouchCallout: 'none' }}>
             {!isSubscribed && (
               <button
                 onClick={subscribeToPush}
-                className="text-[10px] bg-white/20 hover:bg-white/40 text-slate-600 px-3 py-1 rounded-full border border-white/20 transition-all flex items-center gap-1 active:scale-95"
+                className="text-[10px] bg-white/30 hover:bg-white/50 text-rose-900 px-3 py-1 rounded-full border border-white/40 transition-all flex items-center gap-1 active:scale-95"
               >
                 🔔 Nhận thông báo từ người ấy
               </button>
@@ -813,7 +813,7 @@ export default function Home() {
           </div>
           <motion.div
             animate={{
-              color: ['#1e293b', '#64748b', '#1e293b'],
+              color: ['#450a0a', '#991b1b', '#450a0a'],
               textShadow: [
                 '0 0 0px rgba(255,255,255,0)',
                 '0 0 10px rgba(255,255,255,0.2)',
@@ -827,15 +827,15 @@ export default function Home() {
             }}
             className="text-2xl font-bold tracking-wide"
           >
-            Quang <span className="text-rose-400">❤️</span> Linh
+            Quang <span className="text-rose-600">❤️</span> Linh
           </motion.div>
-          <p className="text-slate-700 font-medium text-sm sm:text-base">
+          <p className="text-rose-900 font-medium text-sm sm:text-base">
             Chúng mình đã bên nhau: {elapsed.days} ngày, {elapsed.hours} giờ, {elapsed.minutes} phút, {elapsed.seconds} giây
           </p>
         </div>
 
         <div className="space-y-6">
-          <div className="flex justify-between text-slate-400 text-sm font-medium px-1">
+          <div className="flex justify-between text-rose-800 text-sm font-medium px-1">
             <span>Buồn</span>
             <span>Bình thường</span>
             <span>Vui vẻ</span>
@@ -852,7 +852,7 @@ export default function Home() {
           
           <div className="h-32 flex items-center justify-center">
             {loading ? (
-              <p className="text-slate-400 text-lg animate-pulse">Đang kết nối...</p>
+              <p className="text-rose-800 text-lg animate-pulse">Đang kết nối...</p>
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -864,10 +864,10 @@ export default function Home() {
                   className="flex flex-col items-center gap-2"
                 >
                   <span className="text-6xl drop-shadow-xl filter">{getMoodInfo(mood).emoji}</span>
-                  <span className="text-xl font-bold text-slate-800 text-center px-4">
+                  <span className="text-xl font-bold text-rose-950 text-center px-4">
                     {getMoodInfo(mood).text}
                   </span>
-                  <span className="text-sm font-medium text-slate-400">
+                  <span className="text-sm font-medium text-rose-800">
                     (Mức độ: {mood}%)
                   </span>
                 </motion.div>
@@ -972,25 +972,25 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-md mt-8">
-        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(40px)' }}>
-          <div className="text-slate-800 font-bold flex justify-between items-center">
+        <div className="bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+          <div className="text-rose-950 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span className="text-lg">📔 Nhật ký</span>
-              {userName && <span className="text-[10px] bg-rose-100 text-rose-500 px-2 py-0.5 rounded-full font-bold border border-rose-200">Bạn là {userName}</span>}
+              {userName && <span className="text-[10px] bg-rose-200 text-rose-700 px-2 py-0.5 rounded-full font-bold border border-rose-300">Bạn là {userName}</span>}
             </div>
-            <ChevronDown className="h-4 w-4 opacity-50" />
+            <ChevronDown className="h-4 w-4 opacity-50 text-rose-900" />
           </div>
-          <div className="mt-4 space-y-3 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-200">
+          <div className="mt-4 space-y-3 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-300">
             {logs.map((log, i) => (
-              <div key={i} className="text-sm text-slate-700 border-l-2 border-rose-200 pl-3 py-1">
-                <span className="font-bold text-slate-800">{log.user_name}</span> {log.content}
-                <div className="text-[10px] text-slate-400 mt-0.5 font-medium">
+              <div key={i} className="text-sm text-rose-900 border-l-2 border-rose-300 pl-3 py-1">
+                <span className="font-bold text-rose-950">{log.user_name}</span> {log.content}
+                <div className="text-[10px] text-rose-700 mt-0.5 font-medium">
                   {new Date(log.created_at).toLocaleTimeString('vi-VN')}
                 </div>
               </div>
             ))}
             {logs.length === 0 && (
-              <div className="text-slate-400 text-xs italic text-center py-4">
+              <div className="text-rose-800/60 text-xs italic text-center py-4">
                 Chưa có dòng nhật ký nào. Hãy bắt đầu bằng cách kéo thanh trượt hoặc gửi một cái ôm.
               </div>
             )}
@@ -999,33 +999,33 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mt-6">
-        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(40px)' }}>
-          <div className="text-slate-800 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
+        <div className="bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+          <div className="text-rose-950 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
-              className="flex-1 rounded-2xl bg-white/60 px-4 py-2 text-sm text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 border border-white/40 shadow-inner"
+              className="flex-1 rounded-2xl bg-white/50 px-4 py-2 text-sm text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 border border-white/40 shadow-inner"
               placeholder="Nhập kế hoạch..."
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <button
-              className="rounded-2xl bg-gradient-to-r from-rose-400 to-purple-500 text-white px-4 py-2 text-sm font-bold hover:from-rose-500 hover:to-purple-600 transition shadow-md shadow-rose-200/50 active:scale-95 select-none"
+              className="rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 text-white px-4 py-2 text-sm font-bold hover:from-rose-600 hover:to-rose-700 transition shadow-md shadow-rose-300/50 active:scale-95 select-none"
               style={{ WebkitTouchCallout: 'none' }}
               onClick={addBucketItem}
             >
               Thêm
             </button>
           </div>
-          <div className="max-h-[150px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-200">
+          <div className="max-h-[150px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-300">
             <ul className="space-y-2">
               {bucketItems.map((it) => (
                 <li
                   key={it.id}
-                  className="flex items-center justify-between rounded-2xl bg-white/40 px-4 py-3 text-slate-700 shadow-sm border border-white/40 transition-all hover:bg-white/60"
+                  className="flex items-center justify-between rounded-2xl bg-white/40 px-4 py-3 text-rose-900 shadow-sm border border-white/40 transition-all hover:bg-white/50"
                 >
-                  <div className={`text-sm ${it.is_completed ? 'line-through text-slate-400' : 'font-medium'}`}>
+                  <div className={`text-sm ${it.is_completed ? 'line-through text-rose-800/50' : 'font-medium'}`}>
                     <span>{it.title}</span>
-                    <span className="ml-2 text-[10px] text-slate-400 font-bold">• {it.created_by}</span>
+                    <span className="ml-2 text-[10px] text-rose-800/60 font-bold">• {it.created_by}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <label className="inline-flex items-center gap-2 text-xs cursor-pointer">
@@ -1033,12 +1033,12 @@ export default function Home() {
                         type="checkbox"
                         checked={it.is_completed}
                         onChange={() => toggleBucketItem(it)}
-                        className="h-4 w-4 accent-rose-400 rounded-lg border-rose-200"
+                        className="h-4 w-4 accent-rose-500 rounded-lg border-rose-300"
                       />
                     </label>
                     <button
                       onClick={() => deleteBucketItem(it.id)}
-                      className="text-slate-300 hover:text-rose-400 transition-colors p-1 active:scale-90 select-none"
+                      className="text-rose-300 hover:text-rose-600 transition-colors p-1 active:scale-90 select-none"
                       style={{ WebkitTouchCallout: 'none' }}
                       title="Xóa"
                     >
@@ -1048,15 +1048,15 @@ export default function Home() {
                 </li>
               ))}
               {bucketItems.length === 0 && (
-                <li className="text-slate-400 text-xs italic text-center py-4">Chưa có kế hoạch nào.</li>
+                <li className="text-rose-800/60 text-xs italic text-center py-4">Chưa có kế hoạch nào.</li>
               )}
             </ul>
           </div>
           {bucketItems.some((it) => it.is_completed) && (
-            <div className="flex justify-end pt-2 border-t border-rose-100 select-none" style={{ WebkitTouchCallout: 'none' }}>
+            <div className="flex justify-end pt-2 border-t border-rose-200 select-none" style={{ WebkitTouchCallout: 'none' }}>
               <button
                 onClick={deleteCompletedItems}
-                className="text-[10px] text-rose-400 hover:text-rose-600 transition-colors font-bold uppercase tracking-wider active:scale-95"
+                className="text-[10px] text-rose-600 hover:text-rose-800 transition-colors font-bold uppercase tracking-wider active:scale-95"
               >
                 Xóa việc đã hoàn thành
               </button>
@@ -1067,8 +1067,8 @@ export default function Home() {
 
       <div className="w-full max-w-4xl mt-12 space-y-8 pb-12">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-slate-800 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
-          <p className="text-slate-700 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
+          <h2 className="text-3xl font-bold text-rose-950 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
+          <p className="text-rose-900 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
         </div>
 
         {/* Floating Action Button */}
@@ -1078,7 +1078,7 @@ export default function Home() {
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={() => setIsFormOpen(true)}
-            className="w-14 h-14 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm active:scale-90 transition-transform"
+            className="w-14 h-14 bg-rose-600 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm active:scale-90 transition-transform"
           >
             <Plus size={28} />
           </motion.button>
@@ -1093,7 +1093,7 @@ export default function Home() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={cancelEditing}
-                className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[60]"
+                className="fixed inset-0 bg-rose-900/20 backdrop-blur-[2px] z-[60]"
               />
               <motion.div
                 initial={{ y: "100%" }}
@@ -1102,25 +1102,25 @@ export default function Home() {
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-2xl rounded-t-[32px] p-6 pb-10 z-[70] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] border-t border-white/50"
               >
-                <div className="w-12 h-1.5 bg-rose-100 rounded-full mx-auto mb-6" />
+                <div className="w-12 h-1.5 bg-rose-200 rounded-full mx-auto mb-6" />
                 <div className="flex justify-between items-center mb-6 select-none" style={{ WebkitTouchCallout: 'none' }}>
-                  <h3 className="text-xl font-bold text-rose-900">
+                  <h3 className="text-xl font-bold text-rose-950">
                     {editingMemory ? 'Chỉnh sửa kỷ niệm' : 'Thêm kỷ niệm mới'}
                   </h3>
-                  <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-50 text-rose-400 active:scale-90 transition-transform">
+                  <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-100 text-rose-600 active:scale-90 transition-transform">
                     <X size="20" />
                   </button>
                 </div>
 
                 <div className="space-y-4">
                   <input
-                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-inner"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-inner"
                     placeholder="Tiêu đề kỷ niệm..."
                     value={newMemTitle}
                     onChange={(e) => setNewMemTitle(e.target.value)}
                   />
                   <textarea
-                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 min-h-[120px] resize-none shadow-inner"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[120px] resize-none shadow-inner"
                     placeholder="Nội dung kỷ niệm..."
                     value={newMemContent}
                     onChange={(e) => setNewMemContent(e.target.value)}
@@ -1166,12 +1166,13 @@ export default function Home() {
         </AnimatePresence>
 
         <div className="max-w-md mx-auto relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-rose-400 transition-colors">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-400 group-focus-within:text-rose-600 transition-colors">
             <Search className="h-5 w-5" />
           </div>
           <input
             type="text"
-            className="w-full rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 pl-12 pr-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.15)]"
+            className="w-full rounded-full bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 pl-12 pr-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.15)]"
+            style={{ WebkitBackdropFilter: 'blur(20px)' }}
             placeholder="Tìm kiếm ký ức..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -1188,17 +1189,18 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 whileHover={{ y: -8 }}
-                className="group rounded-[2.5rem] bg-white/40 backdrop-blur-2xl border border-white/40 p-6 space-y-4 hover:bg-white/60 transition-all relative overflow-hidden shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
+                className="group rounded-[2.5rem] bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 p-6 space-y-4 hover:brightness-105 transition-all relative overflow-hidden shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
+                style={{ WebkitBackdropFilter: 'blur(20px)' }}
               >
                 <div className="flex justify-between items-center gap-2">
-                  <h3 className="text-slate-800 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
+                  <h3 className="text-rose-950 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
                   <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity select-none" style={{ WebkitTouchCallout: 'none' }}>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => startEditing(mem)}
-                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-emerald-500 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-rose-400 hover:text-emerald-500 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
                     >
                       <Pencil size="18" />
                     </motion.button>
@@ -1207,7 +1209,7 @@ export default function Home() {
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => deleteMemory(mem.id)}
-                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-rose-500 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-rose-400 hover:text-rose-600 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
                     >
                       <Trash2 size="18" />
                     </motion.button>
@@ -1228,18 +1230,18 @@ export default function Home() {
                   <CustomAudioPlayer src={mem.media_url} />
                 )}
 
-                <p className="text-slate-700 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
+                <p className="text-rose-900 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
                   {mem.content}
                 </p>
-                <div className="flex justify-between items-center pt-4 border-t border-rose-100">
-                  <div className="text-[11px] text-slate-400 italic font-bold">
+                <div className="flex justify-between items-center pt-4 border-t border-rose-200">
+                  <div className="text-[11px] text-rose-800 italic font-bold">
                     {new Date(mem.created_at).toLocaleDateString('vi-VN', {
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric'
                     })}
                   </div>
-                  <span className="text-[10px] bg-rose-100 text-rose-500 px-3 py-1 rounded-full font-bold border border-rose-200 uppercase tracking-tighter">
+                  <span className="text-[10px] bg-rose-200 text-rose-700 px-3 py-1 rounded-full font-bold border border-rose-300 uppercase tracking-tighter">
                     {mem.created_by}
                   </span>
                 </div>
@@ -1253,10 +1255,10 @@ export default function Home() {
               animate={{ opacity: 1 }}
               className="col-span-full text-center py-20 space-y-4"
             >
-              <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto border-2 border-white">
-                <Heart className="h-10 w-10 text-rose-300 animate-pulse" />
+              <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto border-2 border-white">
+                <Heart className="h-10 w-10 text-rose-400 animate-pulse" />
               </div>
-              <p className="text-slate-400 italic text-sm font-bold max-w-xs mx-auto leading-relaxed">
+              <p className="text-rose-800 italic text-sm font-bold max-w-xs mx-auto leading-relaxed">
                 {searchQuery 
                   ? 'Không tìm thấy kỷ niệm nào khớp với từ khóa của bạn...' 
                   : 'Chưa có kỷ niệm nào ở đây, hãy là người đầu tiên viết nên câu chuyện của chúng mình nhé!'}
@@ -1269,7 +1271,8 @@ export default function Home() {
           <div className="flex justify-center pt-8 select-none" style={{ WebkitTouchCallout: 'none' }}>
             <button
               onClick={() => setDisplayCount(prev => prev + 6)}
-              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 text-slate-600 text-sm font-bold hover:bg-white/60 hover:text-rose-500 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.2)] active:scale-95"
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 text-rose-900 text-sm font-bold hover:brightness-105 transition-all shadow-[0_8px_32_0_rgba(255,182,193,0.2)] active:scale-95"
+              style={{ WebkitBackdropFilter: 'blur(20px)' }}
             >
               <span>Xem thêm ký ức ✨</span>
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
