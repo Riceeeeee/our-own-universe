@@ -87,6 +87,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [showPulse, setShowPulse] = useState(false);
   const hugChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
   const heartShapeRef = useRef<ReturnType<typeof confetti.shapeFromPath> | null>(null);
   const [userName, setUserName] = useState<string | null>(() => {
@@ -531,16 +532,25 @@ export default function Home() {
       .subscribe();
 
     // 2. Listen to Broadcast for Hugs (self + others)
-    const hugChannel = supabase.channel('room_1', {
+    const hugChannel = supabase.channel('global_hug_channel', {
       config: { broadcast: { self: true } },
     });
     hugChannelRef.current = hugChannel;
 
     hugChannel
-      .on('broadcast', { event: 'hug-event' }, () => {
-        // Show hearts + confetti on any hug-event
+      .on('broadcast', { event: 'hug_sync_event' }, () => {
+        // Show hearts + confetti
         triggerHearts();
         fireHeartConfetti();
+        
+        // Haptic feedback (Vibrate)
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          navigator.vibrate([100, 50, 100]);
+        }
+        
+        // Visual feedback (Pulse Effect)
+        setShowPulse(true);
+        setTimeout(() => setShowPulse(false), 1000);
       })
       .subscribe();
 
@@ -597,21 +607,22 @@ export default function Home() {
   };
 
   const sendHug = async () => {
-    // Trigger local animation immediately
-    triggerHearts();
-    fireHeartConfetti();
+    // Local feedback is handled via broadcast (self: true)
     
     // Send to other user
     if (!hugChannelRef.current) {
-      hugChannelRef.current = supabase.channel('room_1', {
+      hugChannelRef.current = supabase.channel('global_hug_channel', {
         config: { broadcast: { self: true } },
       }).subscribe();
     }
+    
+    const sender = userName ?? 'Quang';
     await hugChannelRef.current.send({
       type: 'broadcast',
-      event: 'hug-event',
-      payload: { message: 'HUG' },
+      event: 'hug_sync_event',
+      payload: { from: sender },
     });
+    
     await insertLog('vừa gửi một cái ôm');
   };
 
@@ -665,6 +676,21 @@ export default function Home() {
         className="flex min-h-screen flex-col items-center justify-center p-8 bg-[#FCE4EC] transition-colors duration-700 ease-in-out"
       >
       <FloatingHearts hearts={hearts} />
+      
+      {/* Synchronized Pulse Effect */}
+      <AnimatePresence>
+        {showPulse && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0.8 }}
+            animate={{ scale: 4, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="fixed inset-0 z-[100] pointer-events-none flex items-center justify-center"
+          >
+            <div className="w-64 h-64 rounded-full bg-rose-400/30 blur-3xl border-8 border-rose-300/20" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className={`z-10 w-full max-w-md space-y-12 rounded-3xl p-8 backdrop-blur-md shadow-2xl border border-white/20 transition-all duration-500 ${getMoodCardColor(mood)}`}>
         <div className="text-center space-y-2">
