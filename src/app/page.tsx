@@ -719,7 +719,7 @@ export default function Home() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-blue-950 overflow-hidden"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#FFF5F7] overflow-hidden"
           >
             {/* Heart Rain Background for Splash */}
             <div className="absolute inset-0 pointer-events-none">
@@ -737,14 +737,14 @@ export default function Home() {
               }}
               className="z-10 text-center"
             >
-              <h1 className="text-6xl md:text-8xl font-bold text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+              <h1 className="text-6xl md:text-8xl font-bold text-slate-800 drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
                 Quang <span className="text-rose-500">❤️</span> Linh
               </h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="mt-4 text-white/60 text-xl tracking-widest uppercase"
+                className="mt-4 text-slate-800/60 text-xl tracking-widest uppercase"
               >
                 Our Own Universe
               </motion.p>
@@ -753,7 +753,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="relative min-h-[100dvh] w-full bg-gradient-to-b from-rose-50 via-pink-200 to-rose-500 !important transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8 overflow-x-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-40 after:bg-gradient-to-t after:from-rose-600/30 after:to-transparent after:pointer-events-none">
+      <main className="relative min-h-[100dvh] w-full bg-[#FFF5F7] transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8 overflow-x-hidden">
       <FloatingHearts hearts={hearts} />
       
       {/* Synchronized Pulse Effect */}
@@ -798,14 +798,14 @@ export default function Home() {
 
       <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold drop-shadow-sm text-rose-950">
+          <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
           </h1>
           <div className="flex justify-center mt-2 select-none" style={{ WebkitTouchCallout: 'none' }}>
             {!isSubscribed && (
               <button
                 onClick={subscribeToPush}
-                className="text-[10px] bg-white/30 hover:bg-white/50 text-rose-900 px-3 py-1 rounded-full border border-white/40 transition-all flex items-center gap-1 active:scale-95"
+                className="text-[10px] bg-white/30 hover:bg-white/50 text-slate-800 px-3 py-1 rounded-full border border-white/40 transition-all flex items-center gap-1 active:scale-95"
               >
                 🔔 Nhận thông báo từ người ấy
               </button>
@@ -829,13 +829,13 @@ export default function Home() {
           >
             Quang <span className="text-rose-600">❤️</span> Linh
           </motion.div>
-          <p className="text-rose-900 font-medium text-sm sm:text-base">
+          <p className="text-slate-800 font-medium text-sm sm:text-base">
             Chúng mình đã bên nhau: {elapsed.days} ngày, {elapsed.hours} giờ, {elapsed.minutes} phút, {elapsed.seconds} giây
           </p>
         </div>
 
         <div className="space-y-6">
-          <div className="flex justify-between text-rose-800 text-sm font-medium px-1">
+          <div className="flex justify-between text-slate-800 text-sm font-medium px-1">
             <span>Buồn</span>
             <span>Bình thường</span>
             <span>Vui vẻ</span>
@@ -852,7 +852,7 @@ export default function Home() {
           
           <div className="h-32 flex items-center justify-center">
             {loading ? (
-              <p className="text-rose-800 text-lg animate-pulse">Đang kết nối...</p>
+              <p className="text-slate-800 text-lg animate-pulse">Đang kết nối...</p>
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -864,10 +864,10 @@ export default function Home() {
                   className="flex flex-col items-center gap-2"
                 >
                   <span className="text-6xl drop-shadow-xl filter">{getMoodInfo(mood).emoji}</span>
-                  <span className="text-xl font-bold text-rose-950 text-center px-4">
+                  <span className="text-xl font-bold text-slate-800 text-center px-4">
                     {getMoodInfo(mood).text}
                   </span>
-                  <span className="text-sm font-medium text-rose-800">
+                  <span className="text-sm font-medium text-slate-800">
                     (Mức độ: {mood}%)
                   </span>
                 </motion.div>
@@ -973,24 +973,24 @@ export default function Home() {
 
       <div className="w-full max-w-md mt-8">
         <div className="bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
-          <div className="text-rose-950 font-bold flex justify-between items-center">
+          <div className="text-slate-800 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span className="text-lg">📔 Nhật ký</span>
               {userName && <span className="text-[10px] bg-rose-200 text-rose-700 px-2 py-0.5 rounded-full font-bold border border-rose-300">Bạn là {userName}</span>}
             </div>
-            <ChevronDown className="h-4 w-4 opacity-50 text-rose-900" />
+            <ChevronDown className="h-4 w-4 opacity-50 text-slate-800" />
           </div>
           <div className="mt-4 space-y-3 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-300">
             {logs.map((log, i) => (
-              <div key={i} className="text-sm text-rose-900 border-l-2 border-rose-300 pl-3 py-1">
-                <span className="font-bold text-rose-950">{log.user_name}</span> {log.content}
-                <div className="text-[10px] text-rose-700 mt-0.5 font-medium">
+              <div key={i} className="text-sm text-slate-800 border-l-2 border-rose-300 pl-3 py-1">
+                <span className="font-bold text-slate-800">{log.user_name}</span> {log.content}
+                <div className="text-[10px] text-slate-600 mt-0.5 font-medium">
                   {new Date(log.created_at).toLocaleTimeString('vi-VN')}
                 </div>
               </div>
             ))}
             {logs.length === 0 && (
-              <div className="text-rose-800/60 text-xs italic text-center py-4">
+              <div className="text-slate-800/60 text-xs italic text-center py-4">
                 Chưa có dòng nhật ký nào. Hãy bắt đầu bằng cách kéo thanh trượt hoặc gửi một cái ôm.
               </div>
             )}
@@ -1000,10 +1000,10 @@ export default function Home() {
 
       <div className="w-full max-w-md mt-6">
         <div className="bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
-          <div className="text-rose-950 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
+          <div className="text-slate-800 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
-              className="flex-1 rounded-2xl bg-white/50 px-4 py-2 text-sm text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 border border-white/40 shadow-inner"
+              className="flex-1 rounded-2xl bg-white/50 px-4 py-2 text-sm text-slate-800 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 border border-white/40 shadow-inner"
               placeholder="Nhập kế hoạch..."
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
@@ -1021,11 +1021,11 @@ export default function Home() {
               {bucketItems.map((it) => (
                 <li
                   key={it.id}
-                  className="flex items-center justify-between rounded-2xl bg-white/40 px-4 py-3 text-rose-900 shadow-sm border border-white/40 transition-all hover:bg-white/50"
+                  className="flex items-center justify-between rounded-2xl bg-white/40 px-4 py-3 text-slate-800 shadow-sm border border-white/40 transition-all hover:bg-white/50"
                 >
-                  <div className={`text-sm ${it.is_completed ? 'line-through text-rose-800/50' : 'font-medium'}`}>
+                  <div className={`text-sm ${it.is_completed ? 'line-through text-slate-400' : 'font-medium'}`}>
                     <span>{it.title}</span>
-                    <span className="ml-2 text-[10px] text-rose-800/60 font-bold">• {it.created_by}</span>
+                    <span className="ml-2 text-[10px] text-slate-500 font-bold">• {it.created_by}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <label className="inline-flex items-center gap-2 text-xs cursor-pointer">
@@ -1048,7 +1048,7 @@ export default function Home() {
                 </li>
               ))}
               {bucketItems.length === 0 && (
-                <li className="text-rose-800/60 text-xs italic text-center py-4">Chưa có kế hoạch nào.</li>
+                <li className="text-slate-400 text-xs italic text-center py-4">Chưa có kế hoạch nào.</li>
               )}
             </ul>
           </div>
@@ -1067,8 +1067,8 @@ export default function Home() {
 
       <div className="w-full max-w-4xl mt-12 space-y-8 pb-12">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-rose-950 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
-          <p className="text-rose-900 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
+          <h2 className="text-3xl font-bold text-slate-800 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
+          <p className="text-slate-800 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
         </div>
 
         {/* Floating Action Button */}
@@ -1104,7 +1104,7 @@ export default function Home() {
               >
                 <div className="w-12 h-1.5 bg-rose-200 rounded-full mx-auto mb-6" />
                 <div className="flex justify-between items-center mb-6 select-none" style={{ WebkitTouchCallout: 'none' }}>
-                  <h3 className="text-xl font-bold text-rose-950">
+                  <h3 className="text-xl font-bold text-slate-800">
                     {editingMemory ? 'Chỉnh sửa kỷ niệm' : 'Thêm kỷ niệm mới'}
                   </h3>
                   <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-100 text-rose-600 active:scale-90 transition-transform">
@@ -1114,13 +1114,13 @@ export default function Home() {
 
                 <div className="space-y-4">
                   <input
-                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-inner"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-slate-800 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-inner"
                     placeholder="Tiêu đề kỷ niệm..."
                     value={newMemTitle}
                     onChange={(e) => setNewMemTitle(e.target.value)}
                   />
                   <textarea
-                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[120px] resize-none shadow-inner"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-200 px-4 py-3 text-base text-slate-800 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[120px] resize-none shadow-inner"
                     placeholder="Nội dung kỷ niệm..."
                     value={newMemContent}
                     onChange={(e) => setNewMemContent(e.target.value)}
@@ -1171,7 +1171,7 @@ export default function Home() {
           </div>
           <input
             type="text"
-            className="w-full rounded-full bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 pl-12 pr-4 py-3 text-base text-rose-950 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.15)]"
+            className="w-full rounded-full bg-white/20 backdrop-blur-xl border border-white/40 pl-12 pr-4 py-3 text-base text-slate-800 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.15)]"
             style={{ WebkitBackdropFilter: 'blur(20px)' }}
             placeholder="Tìm kiếm ký ức..."
             value={searchQuery}
@@ -1193,7 +1193,7 @@ export default function Home() {
                 style={{ WebkitBackdropFilter: 'blur(20px)' }}
               >
                 <div className="flex justify-between items-center gap-2">
-                  <h3 className="text-rose-950 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
+                  <h3 className="text-slate-800 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
                   <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity select-none" style={{ WebkitTouchCallout: 'none' }}>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
@@ -1230,11 +1230,11 @@ export default function Home() {
                   <CustomAudioPlayer src={mem.media_url} />
                 )}
 
-                <p className="text-rose-900 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
+                <p className="text-slate-800 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
                   {mem.content}
                 </p>
                 <div className="flex justify-between items-center pt-4 border-t border-rose-200">
-                  <div className="text-[11px] text-rose-800 italic font-bold">
+                  <div className="text-[11px] text-slate-500 italic font-bold">
                     {new Date(mem.created_at).toLocaleDateString('vi-VN', {
                       day: '2-digit',
                       month: '2-digit',
@@ -1258,7 +1258,7 @@ export default function Home() {
               <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto border-2 border-white">
                 <Heart className="h-10 w-10 text-rose-400 animate-pulse" />
               </div>
-              <p className="text-rose-800 italic text-sm font-bold max-w-xs mx-auto leading-relaxed">
+              <p className="text-slate-800 italic text-sm font-bold max-w-xs mx-auto leading-relaxed">
                 {searchQuery 
                   ? 'Không tìm thấy kỷ niệm nào khớp với từ khóa của bạn...' 
                   : 'Chưa có kỷ niệm nào ở đây, hãy là người đầu tiên viết nên câu chuyện của chúng mình nhé!'}
@@ -1271,7 +1271,7 @@ export default function Home() {
           <div className="flex justify-center pt-8 select-none" style={{ WebkitTouchCallout: 'none' }}>
             <button
               onClick={() => setDisplayCount(prev => prev + 6)}
-              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 text-rose-900 text-sm font-bold hover:brightness-105 transition-all shadow-[0_8px_32_0_rgba(255,182,193,0.2)] active:scale-95"
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/20 backdrop-blur-xl border border-white/40 text-slate-800 text-sm font-bold hover:brightness-105 transition-all shadow-[0_8px_32_0_rgba(255,182,193,0.2)] active:scale-95"
               style={{ WebkitBackdropFilter: 'blur(20px)' }}
             >
               <span>Xem thêm ký ức ✨</span>
