@@ -941,20 +941,22 @@ export default function Home() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 className="group rounded-2xl bg-white/40 backdrop-blur-md border border-white/40 p-6 space-y-3 hover:bg-white/60 transition-all relative overflow-hidden shadow-sm"
               >
-                <div className="flex justify-between items-start gap-2">
-                  <h3 className="text-rose-900 font-bold text-lg leading-tight pr-8">{mem.title}</h3>
-                  <div className="flex gap-1 absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex flex-row items-center justify-between gap-2">
+                  <h3 className="text-rose-900 font-bold text-lg leading-tight min-w-0 flex-1 truncate">
+                    {mem.title}
+                  </h3>
+                  <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => startEditing(mem)}
-                      className="p-1.5 rounded-lg bg-white/40 text-rose-900/40 hover:text-emerald-500 hover:bg-white/60 transition-all border border-white/20"
+                      className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/60 text-emerald-600 md:bg-white/40 md:text-rose-900/40 md:hover:text-emerald-500 md:hover:bg-white/60 transition-all border border-white/30"
                     >
-                      <Pencil className="h-3.5 w-3.5" />
+                      <Pencil className="h-5 w-5" />
                     </button>
                     <button
                       onClick={() => deleteMemory(mem.id)}
-                      className="p-1.5 rounded-lg bg-white/40 text-rose-900/40 hover:text-rose-500 hover:bg-white/60 transition-all border border-white/20"
+                      className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/60 text-rose-600 md:bg-white/40 md:text-rose-900/40 md:hover:text-rose-500 md:hover:bg-white/60 transition-all border border-white/30"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-5 w-5" />
                     </button>
                   </div>
                 </div>
