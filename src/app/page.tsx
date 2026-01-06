@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { MoodSlider } from '@/components/MoodSlider';
 import { FloatingHearts } from '@/components/FloatingHearts';
-import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic, Loader2 } from 'lucide-react';
+import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic, Loader2, Plus, Play, Pause, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -30,12 +30,61 @@ const getMoodInfo = (level: number) => {
   return { emoji: '🌟', text: 'Cực kỳ hạnh phúc luôn!' };
 };
 
+// Custom Audio Player Component
+const CustomAudioPlayer = ({ src }: { src: string }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) audioRef.current.pause();
+      else audioRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const onTimeUpdate = () => {
+    if (audioRef.current) {
+      const p = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+      setProgress(p);
+    }
+  };
+
+  return (
+    <div className="bg-rose-50/50 backdrop-blur-sm rounded-2xl p-3 border border-rose-100 flex items-center gap-3 shadow-inner">
+      <audio 
+        ref={audioRef} 
+        src={src} 
+        onTimeUpdate={onTimeUpdate} 
+        onEnded={() => setIsPlaying(false)}
+        className="hidden" 
+      />
+      <button 
+        onClick={togglePlay}
+        className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform"
+      >
+        {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
+      </button>
+      <div className="flex-1 h-1.5 bg-rose-200 rounded-full overflow-hidden relative">
+        <motion.div 
+          initial={false}
+          animate={{ width: `${progress}%` }}
+          className="absolute inset-0 bg-rose-500"
+        />
+      </div>
+      <Volume2 size={16} className="text-rose-400" />
+    </div>
+  );
+};
+
 export default function Home() {
   const [mood, setMood] = useState<number>(50);
   const [hearts, setHearts] = useState<{ id: number; x: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const hugChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
   const heartShapeRef = useRef<ReturnType<typeof confetti.shapeFromPath> | null>(null);
   const [userName, setUserName] = useState<string | null>(() => {
@@ -310,9 +359,18 @@ export default function Home() {
         media_type
       });
       
+      // Success effect
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#fb7185', '#fda4af', '#fff']
+      });
+
       setNewMemTitle('');
       setNewMemContent('');
       setSelectedFile(null);
+      setIsFormOpen(false);
     } catch (error) {
       console.error('Error adding memory:', error);
       alert('Có lỗi xảy ra khi tải lên tệp tin.');
@@ -366,13 +424,14 @@ export default function Home() {
     setEditingMemory(mem);
     setNewMemTitle(mem.title);
     setNewMemContent(mem.content);
-    window.scrollTo({ top: document.getElementById('memory-form')?.offsetTop ? document.getElementById('memory-form')!.offsetTop - 100 : 0, behavior: 'smooth' });
+    setIsFormOpen(true);
   };
 
   const cancelEditing = () => {
     setEditingMemory(null);
     setNewMemTitle('');
     setNewMemContent('');
+    setIsFormOpen(false);
   };
 
   const filteredMemories = memories.filter(mem => 
@@ -824,106 +883,103 @@ export default function Home() {
           <p className="text-rose-800/60 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
         </div>
 
-        <div id="memory-form" className="rounded-2xl bg-white/40 backdrop-blur-md border border-white/40 p-6 space-y-4 max-w-md mx-auto relative overflow-hidden shadow-sm">
-          <AnimatePresence mode="wait">
-            {editingMemory && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="absolute top-0 left-0 right-0 bg-emerald-500 text-white text-[10px] font-bold py-1 text-center uppercase tracking-wider"
-              >
-                Đang chỉnh sửa kỷ niệm
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <div className="space-y-3 pt-2">
-            <input
-              className="w-full rounded-xl bg-white/80 px-4 py-2 text-sm text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300"
-              placeholder="Tiêu đề kỷ niệm..."
-              value={newMemTitle}
-              onChange={(e) => setNewMemTitle(e.target.value)}
-            />
-            <textarea
-              className="w-full rounded-xl bg-white/80 px-4 py-2 text-sm text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[100px] resize-none"
-              placeholder="Nội dung kỷ niệm..."
-              value={newMemContent}
-              onChange={(e) => setNewMemContent(e.target.value)}
-            />
-            
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <div className="p-2 rounded-full bg-rose-100 text-rose-500 group-hover:bg-rose-500 group-hover:text-white transition-all shadow-sm">
-                  <ImageIcon className="h-5 w-5" />
-                </div>
-                <span className="text-xs text-rose-900/60 group-hover:text-rose-900 transition-colors font-medium">Ảnh</span>
-                <input 
-                  type="file" 
-                  accept="image/*" 
-                  className="hidden" 
-                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                />
-              </label>
-              
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <div className="p-2 rounded-full bg-emerald-100 text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-all shadow-sm">
-                  <Mic className="h-5 w-5" />
-                </div>
-                <span className="text-xs text-rose-900/60 group-hover:text-rose-900 transition-colors font-medium">Ghi âm</span>
-                <input 
-                  type="file" 
-                  accept="audio/*" 
-                  className="hidden" 
-                  onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-                />
-              </label>
-
-              {selectedFile && (
-                <div className="flex-1 flex items-center justify-between bg-white/60 rounded-lg px-3 py-1 border border-white/40">
-                  <span className="text-[10px] text-rose-900/80 truncate max-w-[100px] font-medium">{selectedFile.name}</span>
-                  <button onClick={() => setSelectedFile(null)} className="text-rose-900/40 hover:text-rose-600">
-                    <X className="h-3 w-3" />
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                disabled={uploading}
-                className={`flex-1 rounded-xl py-3 text-sm font-bold transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 ${
-                  editingMemory ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-rose-500 hover:bg-rose-600'
-                } text-white disabled:opacity-50`}
-                onClick={editingMemory ? updateMemory : addMemory}
-              >
-                {uploading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Đang tải lên...
-                  </>
-                ) : (
-                  editingMemory ? 'Cập nhật ký ức' : 'Lưu giữ ký ức'
-                )}
-              </button>
-              {editingMemory && (
-                <button
-                  className="px-4 rounded-xl bg-white/60 text-rose-900 hover:bg-white/80 transition-all border border-white/40"
-                  onClick={cancelEditing}
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              )}
-            </div>
-          </div>
+        {/* Floating Action Button */}
+        <div className="fixed bottom-6 left-6 z-40">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9, type: "spring", stiffness: 400, damping: 17 }}
+            onClick={() => setIsFormOpen(true)}
+            className="w-14 h-14 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm"
+          >
+            <Plus size={28} />
+          </motion.button>
         </div>
 
+        {/* Bottom Sheet Form */}
+        <AnimatePresence>
+          {isFormOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={cancelEditing}
+                className="fixed inset-0 bg-black/20 backdrop-blur-[2px] z-[60]"
+              />
+              <motion.div
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-2xl rounded-t-[32px] p-6 pb-10 z-[70] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] border-t border-white/50"
+              >
+                <div className="w-12 h-1.5 bg-rose-100 rounded-full mx-auto mb-6" />
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-rose-900">
+                    {editingMemory ? 'Chỉnh sửa kỷ niệm' : 'Thêm kỷ niệm mới'}
+                  </h3>
+                  <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-50 text-rose-400">
+                    <X size="20" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <input
+                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all"
+                    placeholder="Tiêu đề kỷ niệm..."
+                    value={newMemTitle}
+                    onChange={(e) => setNewMemTitle(e.target.value)}
+                  />
+                  <textarea
+                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[120px] resize-none"
+                    placeholder="Nội dung kỷ niệm..."
+                    value={newMemContent}
+                    onChange={(e) => setNewMemContent(e.target.value)}
+                  />
+                  
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer group flex-1">
+                      <div className="p-3 rounded-2xl bg-rose-50 text-rose-500 group-active:scale-95 transition-all shadow-sm border border-rose-100 flex items-center justify-center gap-2 w-full">
+                        <ImageIcon size="20" />
+                        <span className="text-sm font-bold">Thêm ảnh/nhạc</span>
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*,audio/*"
+                        onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                      />
+                    </label>
+                    {selectedFile && (
+                      <div className="flex-1 flex items-center gap-2 bg-rose-50/50 p-2 rounded-xl border border-rose-100">
+                        <span className="text-xs font-medium text-rose-400 truncate flex-1">{selectedFile.name}</span>
+                        <button onClick={() => setSelectedFile(null)} className="text-rose-300"><X size="14" /></button>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    disabled={uploading}
+                    className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 ${
+                      editingMemory ? 'bg-emerald-500 shadow-emerald-200' : 'bg-rose-500 shadow-rose-200'
+                    } text-white disabled:opacity-50`}
+                    onClick={editingMemory ? updateMemory : addMemory}
+                  >
+                    {uploading ? <Loader2 className="animate-spin" /> : (editingMemory ? 'Cập nhật' : 'Lưu giữ ngay')}
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
         <div className="max-w-md mx-auto relative">
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-rose-300">
-            <Search className="h-4 w-4" />
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-300">
+            <Search className="h-5 w-5" />
           </div>
           <input
             type="text"
-            className="w-full rounded-full bg-white/40 backdrop-blur-md border border-white/40 pl-10 pr-4 py-2 text-sm text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-sm"
+            className="w-full rounded-full bg-white/60 backdrop-blur-md border border-white/60 pl-12 pr-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-sm"
             placeholder="Tìm kiếm ký ức..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -939,62 +995,53 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className="group rounded-2xl bg-white/40 backdrop-blur-md border border-white/40 p-6 space-y-3 hover:bg-white/60 transition-all relative overflow-hidden shadow-sm"
+                whileHover={{ y: -5 }}
+                className="group rounded-[32px] bg-white/50 backdrop-blur-xl border border-white/60 p-6 space-y-4 hover:bg-white/70 transition-all relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
               >
-                <div className="flex flex-row items-center justify-between gap-2">
-                  <h3 className="text-rose-900 font-bold text-lg leading-tight min-w-0 flex-1 truncate">
-                    {mem.title}
-                  </h3>
-                  <div className="flex items-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                <div className="flex justify-between items-center gap-2">
+                  <h3 className="text-rose-900 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
+                  <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => startEditing(mem)}
-                      className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/60 text-emerald-600 md:bg-white/40 md:text-rose-900/40 md:hover:text-emerald-500 md:hover:bg-white/60 transition-all border border-white/30"
+                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-emerald-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm active:scale-90"
                     >
-                      <Pencil className="h-5 w-5" />
+                      <Pencil size="20" />
                     </button>
                     <button
                       onClick={() => deleteMemory(mem.id)}
-                      className="w-11 h-11 flex items-center justify-center rounded-xl bg-white/60 text-rose-600 md:bg-white/40 md:text-rose-900/40 md:hover:text-rose-500 md:hover:bg-white/60 transition-all border border-white/30"
+                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-rose-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm active:scale-90"
                     >
-                      <Trash2 className="h-5 w-5" />
+                      <Trash2 size="20" />
                     </button>
                   </div>
                 </div>
 
                 {mem.media_url && mem.media_type === 'image' && (
-                  <div className="relative aspect-video rounded-xl overflow-hidden border border-white/40 shadow-sm">
+                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/40 shadow-md">
                     <img 
                       src={mem.media_url} 
                       alt={mem.title} 
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 )}
 
                 {mem.media_url && mem.media_type === 'audio' && (
-                  <div className="bg-white/20 rounded-xl p-3 border border-white/20 shadow-inner">
-                    <audio 
-                      controls 
-                      src={mem.media_url} 
-                      className="w-full h-8 opacity-60 hover:opacity-100 transition-opacity"
-                    />
-                  </div>
+                  <CustomAudioPlayer src={mem.media_url} />
                 )}
 
-                <p className="text-rose-900/80 text-sm whitespace-pre-wrap leading-relaxed">
+                <p className="text-rose-900/80 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
                   {mem.content}
                 </p>
-                <div className="flex justify-between items-center pt-2 border-t border-rose-100">
-                  <div className="text-[10px] text-rose-900/40 italic font-medium">
+                <div className="flex justify-between items-center pt-3 border-t border-rose-100/50">
+                  <div className="text-[11px] text-rose-900/40 italic font-bold">
                     {new Date(mem.created_at).toLocaleDateString('vi-VN', {
                       day: '2-digit',
                       month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
+                      year: 'numeric'
                     })}
                   </div>
-                  <span className="text-[10px] bg-rose-500/10 text-rose-600 px-2 py-1 rounded-full font-bold border border-rose-200">
+                  <span className="text-[11px] bg-rose-500 text-white px-3 py-1 rounded-full font-bold shadow-sm shadow-rose-200">
                     {mem.created_by}
                   </span>
                 </div>
