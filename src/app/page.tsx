@@ -1267,7 +1267,7 @@ export default function Home() {
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </button>
           </div>
-        </div>
+        )}
       </div>
     </main>
     </>
