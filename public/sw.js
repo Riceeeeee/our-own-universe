@@ -5,8 +5,7 @@ self.addEventListener('push', function (event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: '/icon.png', // Hãy đảm bảo bạn có file icon.png trong thư mục public
-      badge: '/badge.png', // Hãy đảm bảo bạn có file badge.png trong thư mục public
+      icon: '/apple-touch-icon.png', // Sử dụng file hiện có
       data: {
         url: data.url || '/'
       },

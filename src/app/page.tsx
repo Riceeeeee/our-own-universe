@@ -559,6 +559,7 @@ export default function Home() {
       })
       .on('presence', { event: 'sync' }, () => {
         const state = hugChannel.presenceState<{ isHugging: boolean }>();
+        console.log('Presence synced:', state); // Debug log
         const newState: Record<string, { isHugging: boolean }> = {};
         
         Object.keys(state).forEach(key => {
@@ -587,7 +588,7 @@ export default function Home() {
       supabase.removeChannel(moodSubscription);
       if (hugChannelRef.current) supabase.removeChannel(hugChannelRef.current);
     };
-  }, [triggerHearts, fireHeartConfetti]);
+  }, [triggerHearts, fireHeartConfetti, userName]);
 
   useEffect(() => {
     const fetchLogs = async () => {
@@ -659,16 +660,20 @@ export default function Home() {
   };
 
   const startHugging = async () => {
-    if (hugChannelRef.current) {
-      await hugChannelRef.current.track({ isHugging: true });
-    }
-  };
-
-  const stopHugging = async () => {
-    if (hugChannelRef.current) {
-      await hugChannelRef.current.track({ isHugging: false });
-    }
-  };
+     console.log('Start hugging...');
+     if (hugChannelRef.current) {
+       const status = await hugChannelRef.current.track({ isHugging: true });
+       console.log('Track status (start):', status);
+     }
+   };
+ 
+   const stopHugging = async () => {
+     console.log('Stop hugging...');
+     if (hugChannelRef.current) {
+       const status = await hugChannelRef.current.track({ isHugging: false });
+       console.log('Track status (stop):', status);
+     }
+   };
 
   // Tự động tắt SpecialConnection sau 30 giây
   useEffect(() => {
@@ -870,6 +875,7 @@ export default function Home() {
               whileTap={{ scale: 0.9 }}
               onMouseDown={startHugging}
               onMouseUp={stopHugging}
+              onMouseLeave={stopHugging}
               onTouchStart={startHugging}
               onTouchEnd={stopHugging}
               onClick={sendHug}
