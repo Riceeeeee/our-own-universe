@@ -91,6 +91,7 @@ export default function Home() {
   const [presenceState, setPresenceState] = useState<Record<string, { isHugging: boolean }>>({});
   const [specialConnection, setSpecialConnection] = useState(false);
   const hugChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
+  const stopHuggingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const heartShapeRef = useRef<ReturnType<typeof confetti.shapeFromPath> | null>(null);
   const [userName, setUserName] = useState<string | null>(() => {
     try {
@@ -548,11 +549,6 @@ export default function Home() {
         triggerHearts();
         fireHeartConfetti();
         
-        // Haptic feedback (Vibrate)
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          navigator.vibrate([100, 50, 100]);
-        }
-        
         // Visual feedback (Pulse Effect)
         setShowPulse(true);
         setTimeout(() => setShowPulse(false), 1000);
@@ -563,7 +559,8 @@ export default function Home() {
         const newState: Record<string, { isHugging: boolean }> = {};
         
         Object.keys(state).forEach(key => {
-          newState[key] = state[key][0];
+          // Dùng some() để kiểm tra nếu ít nhất một phiên kết nối đang hugging
+          newState[key] = { isHugging: state[key].some(p => p.isHugging) };
         });
         
         setPresenceState(newState);
@@ -587,6 +584,7 @@ export default function Home() {
     return () => {
       supabase.removeChannel(moodSubscription);
       if (hugChannelRef.current) supabase.removeChannel(hugChannelRef.current);
+      if (stopHuggingTimerRef.current) clearTimeout(stopHuggingTimerRef.current);
     };
   }, [triggerHearts, fireHeartConfetti, userName]);
 
@@ -660,25 +658,44 @@ export default function Home() {
   };
 
   const startHugging = async () => {
-     console.log('Start hugging...');
-     if (hugChannelRef.current) {
-       const status = await hugChannelRef.current.track({ isHugging: true });
-       console.log('Track status (start):', status);
-     }
-   };
- 
-   const stopHugging = async () => {
-     console.log('Stop hugging...');
-     if (hugChannelRef.current) {
-       const status = await hugChannelRef.current.track({ isHugging: false });
-       console.log('Track status (stop):', status);
-     }
-   };
+    console.log('Start hugging...');
+    // Clear stop timer if it exists
+    if (stopHuggingTimerRef.current) {
+      clearTimeout(stopHuggingTimerRef.current);
+      stopHuggingTimerRef.current = null;
+    }
 
-  // Tự động tắt SpecialConnection sau 30 giây
+    if (hugChannelRef.current) {
+      const status = await hugChannelRef.current.track({ isHugging: true });
+      console.log('Track status (start):', status);
+    }
+  };
+
+  const stopHugging = async () => {
+    console.log('Stop hugging (waiting 1.5s buffer)...');
+    
+    // Clear existing timer if any
+    if (stopHuggingTimerRef.current) clearTimeout(stopHuggingTimerRef.current);
+
+    // Buffer 1.5s before actually setting isHugging to false
+    stopHuggingTimerRef.current = setTimeout(async () => {
+      if (hugChannelRef.current) {
+        const status = await hugChannelRef.current.track({ isHugging: false });
+        console.log('Track status (stop):', status);
+      }
+      stopHuggingTimerRef.current = null;
+    }, 1500);
+  };
+
+  // Tự động tắt SpecialConnection sau 30 giây và kích hoạt rung nhịp tim khi kết nối
   useEffect(() => {
     let timer: NodeJS.Timeout;
     if (specialConnection) {
+      // Haptic Feedback: Nhịp tim khi kết nối thành công
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+
       timer = setTimeout(() => {
         setSpecialConnection(false);
       }, 30000);
@@ -767,9 +784,11 @@ export default function Home() {
             }}
             exit={{ opacity: 0 }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="fixed inset-0 z-[90] pointer-events-none border-[12px] border-rose-400/20"
+            className="fixed inset-0 z-[9999] pointer-events-none border-[12px] border-rose-400/20"
             style={{
-              background: "linear-gradient(to right, rgba(251, 113, 133, 0.1), transparent, rgba(251, 113, 133, 0.1))"
+              background: "linear-gradient(to right, rgba(251, 113, 133, 0.1), transparent, rgba(251, 113, 133, 0.1))",
+              WebkitBackdropFilter: "blur(4px)",
+              backdropFilter: "blur(4px)"
             }}
           />
         )}
