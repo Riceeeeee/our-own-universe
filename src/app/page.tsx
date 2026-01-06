@@ -796,13 +796,13 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-700 ease-in-out ${
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-1000 ease-in-out border ${
         mood <= 30 
-          ? 'bg-blue-100/20' 
+          ? 'bg-indigo-100/40 border-indigo-200/50' 
           : mood <= 70 
-            ? 'bg-emerald-50/20' 
-            : 'bg-rose-200/30'
-      }`} style={{ WebkitBackdropFilter: 'blur(40px)' }}>
+            ? 'bg-emerald-100/30 border-emerald-200/50' 
+            : 'bg-rose-300/50 border-rose-400/50'
+      }`} style={{ WebkitBackdropFilter: 'blur(64px)' }}>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
