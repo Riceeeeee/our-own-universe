@@ -753,7 +753,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-[100dvh] bg-gradient-to-br from-rose-100/60 via-pink-50/50 to-rose-200/60 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
+      <main className="relative min-h-[100dvh] w-full bg-gradient-to-b from-rose-50 via-pink-200 to-rose-500 !important transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8 overflow-x-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-40 after:bg-gradient-to-t after:from-rose-600/30 after:to-transparent after:pointer-events-none">
       <FloatingHearts hearts={hearts} />
       
       {/* Synchronized Pulse Effect */}
@@ -796,7 +796,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold drop-shadow-sm text-rose-950">
             Our Universe
@@ -972,7 +972,7 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-md mt-8">
-        <div className="bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+        <div className="bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
           <div className="text-rose-950 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span className="text-lg">📔 Nhật ký</span>
@@ -999,7 +999,7 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mt-6">
-        <div className="bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+        <div className="bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(20px)' }}>
           <div className="text-rose-950 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
@@ -1189,7 +1189,7 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 whileHover={{ y: -8 }}
-                className="group rounded-[2.5rem] bg-gradient-to-br from-rose-100/90 via-pink-300/80 to-rose-500/90 !important backdrop-blur-2xl border border-white/60 p-6 space-y-4 hover:brightness-105 transition-all relative overflow-hidden shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
+                className="group rounded-[2.5rem] bg-white/20 backdrop-blur-xl border border-white/40 p-6 space-y-4 hover:brightness-105 transition-all relative overflow-hidden shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
                 style={{ WebkitBackdropFilter: 'blur(20px)' }}
               >
                 <div className="flex justify-between items-center gap-2">
