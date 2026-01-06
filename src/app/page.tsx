@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { MoodSlider } from '@/components/MoodSlider';
 import { FloatingHearts } from '@/components/FloatingHearts';
-import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic, Loader2, Plus, Play, Pause, Volume2 } from 'lucide-react';
+import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic, Loader2, Plus, Play, Pause, Volume2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -928,30 +928,41 @@ export default function Home() {
       </div>
       
       {!userName && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-6">
-          <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl space-y-4">
-            <div className="text-center font-bold text-lg">Bạn là ai?</div>
-            <div className="grid grid-cols-2 gap-3">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-rose-900/10 backdrop-blur-md p-6">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="w-full max-w-sm rounded-[2.5rem] bg-white/90 backdrop-blur-2xl p-8 shadow-2xl shadow-rose-200/50 space-y-8 border border-white"
+          >
+            <div className="text-center space-y-2">
+              <h2 className="text-2xl font-black text-slate-800 tracking-tight">Chào mừng bạn! ✨</h2>
+              <p className="text-slate-500 font-medium">Bạn là ai trong hai người nhỉ?</p>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
               <button
-                className="rounded-xl bg-rose-500 text-white py-3 font-semibold hover:bg-rose-600 transition"
+                className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-rose-400 to-rose-500 p-4 transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-rose-200"
                 onClick={() => {
                   localStorage.setItem('user_name', 'Quang');
                   setUserName('Quang');
                 }}
               >
-                Quang
+                <span className="relative z-10 text-white font-bold text-lg flex items-center justify-center gap-2">
+                  👦 Quang <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </button>
               <button
-                className="rounded-xl bg-emerald-600 text-white py-3 font-semibold hover:bg-emerald-700 transition"
+                className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-400 to-emerald-500 p-4 transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-emerald-200"
                 onClick={() => {
                   localStorage.setItem('user_name', 'Linh');
                   setUserName('Linh');
                 }}
               >
-                Linh
+                <span className="relative z-10 text-white font-bold text-lg flex items-center justify-center gap-2">
+                  👧 Linh <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
 
@@ -1146,13 +1157,13 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        <div className="max-w-md mx-auto relative">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-rose-300">
+        <div className="max-w-md mx-auto relative group">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-rose-400 transition-colors">
             <Search className="h-5 w-5" />
           </div>
           <input
             type="text"
-            className="w-full rounded-full bg-white/60 backdrop-blur-md border border-white/60 pl-12 pr-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all shadow-sm"
+            className="w-full rounded-full bg-white/60 backdrop-blur-xl border border-white/80 pl-12 pr-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-lg shadow-rose-100/20"
             placeholder="Tìm kiếm ký ức..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -1168,35 +1179,35 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                whileHover={{ y: -5 }}
-                className="group rounded-[32px] bg-white/50 backdrop-blur-xl border border-white/60 p-6 space-y-4 hover:bg-white/70 transition-all relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+                whileHover={{ y: -8 }}
+                className="group rounded-[2.5rem] bg-white/50 backdrop-blur-xl border border-white/80 p-6 space-y-4 hover:bg-white/70 transition-all relative overflow-hidden shadow-xl shadow-rose-100/30"
               >
                 <div className="flex justify-between items-center gap-2">
-                  <h3 className="text-rose-900 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
+                  <h3 className="text-slate-800 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
                   <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => startEditing(mem)}
-                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-emerald-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-emerald-500 hover:bg-white transition-all border border-white shadow-sm"
                     >
-                      <Pencil size="20" />
+                      <Pencil size="18" />
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => deleteMemory(mem.id)}
-                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-rose-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-rose-500 hover:bg-white transition-all border border-white shadow-sm"
                     >
-                      <Trash2 size="20" />
+                      <Trash2 size="18" />
                     </motion.button>
                   </div>
                 </div>
 
                 {mem.media_url && mem.media_type === 'image' && (
-                  <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/40 shadow-md">
+                  <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden border-2 border-white/80 shadow-inner">
                     <img 
                       src={mem.media_url} 
                       alt={mem.title} 
@@ -1209,18 +1220,18 @@ export default function Home() {
                   <CustomAudioPlayer src={mem.media_url} />
                 )}
 
-                <p className="text-rose-900/80 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
+                <p className="text-slate-600 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
                   {mem.content}
                 </p>
-                <div className="flex justify-between items-center pt-3 border-t border-rose-100/50">
-                  <div className="text-[11px] text-rose-900/40 italic font-bold">
+                <div className="flex justify-between items-center pt-4 border-t border-rose-100">
+                  <div className="text-[11px] text-slate-400 italic font-bold">
                     {new Date(mem.created_at).toLocaleDateString('vi-VN', {
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric'
                     })}
                   </div>
-                  <span className="text-[11px] bg-rose-500 text-white px-3 py-1 rounded-full font-bold shadow-sm shadow-rose-200">
+                  <span className="text-[10px] bg-rose-100 text-rose-500 px-3 py-1 rounded-full font-bold border border-rose-200 uppercase tracking-tighter">
                     {mem.created_by}
                   </span>
                 </div>
@@ -1232,10 +1243,12 @@ export default function Home() {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="col-span-full text-center py-12 space-y-3"
+              className="col-span-full text-center py-20 space-y-4"
             >
-              <Heart className="h-12 w-12 text-rose-300 mx-auto animate-pulse opacity-40" />
-              <p className="text-rose-900/40 italic text-sm font-medium">
+              <div className="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mx-auto border-2 border-white">
+                <Heart className="h-10 w-10 text-rose-300 animate-pulse" />
+              </div>
+              <p className="text-slate-400 italic text-sm font-bold max-w-xs mx-auto leading-relaxed">
                 {searchQuery 
                   ? 'Không tìm thấy kỷ niệm nào khớp với từ khóa của bạn...' 
                   : 'Chưa có kỷ niệm nào ở đây, hãy là người đầu tiên viết nên câu chuyện của chúng mình nhé!'}
@@ -1245,16 +1258,16 @@ export default function Home() {
         </div>
 
         {filteredMemories.length > displayCount && (
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center pt-8">
             <button
               onClick={() => setDisplayCount(prev => prev + 6)}
-              className="group flex items-center gap-2 px-6 py-2 rounded-full bg-white/40 border border-white/40 text-rose-900 text-sm font-bold hover:bg-white/60 transition-all shadow-sm"
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/60 backdrop-blur-xl border border-white/80 text-slate-600 text-sm font-bold hover:bg-white hover:text-rose-500 transition-all shadow-lg shadow-rose-100/20"
             >
-              <span>Xem thêm ký ức</span>
+              <span>Xem thêm ký ức ✨</span>
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </button>
           </div>
-        )}
+        </div>
       </div>
     </main>
     </>

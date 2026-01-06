@@ -16,10 +16,10 @@ const MoodSlider = forwardRef<
     )}
     {...props}
   >
-    <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-white/20">
-      <SliderPrimitive.Range className="absolute h-full bg-white" />
+    <SliderPrimitive.Track className="relative h-3 w-full grow overflow-hidden rounded-full bg-slate-200/30 backdrop-blur-sm border border-white/40 shadow-inner">
+      <SliderPrimitive.Range className="absolute h-full bg-gradient-to-r from-rose-300 to-purple-400" />
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="block h-6 w-6 rounded-full border-2 border-white bg-white ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 transition-transform" />
+    <SliderPrimitive.Thumb className="block h-7 w-7 rounded-full border-[3px] border-white bg-gradient-to-br from-white to-rose-50 shadow-lg shadow-rose-200/50 ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-110 active:scale-95 cursor-grab active:cursor-grabbing" />
   </SliderPrimitive.Root>
 ));
 MoodSlider.displayName = SliderPrimitive.Root.displayName;
