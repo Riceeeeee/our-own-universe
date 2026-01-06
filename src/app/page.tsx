@@ -266,7 +266,7 @@ export default function Home() {
       )
       .subscribe();
     return () => {
-      supabase.removeChannel(bucketChannel);
+      bucketChannel.unsubscribe();
     };
   }, []);
 
@@ -306,7 +306,7 @@ export default function Home() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(memoriesChannel);
+      memoriesChannel.unsubscribe();
     };
   }, []);
 
@@ -582,8 +582,8 @@ export default function Home() {
       });
 
     return () => {
-      supabase.removeChannel(moodSubscription);
-      if (hugChannelRef.current) supabase.removeChannel(hugChannelRef.current);
+      moodSubscription.unsubscribe();
+      if (hugChannelRef.current) hugChannelRef.current.unsubscribe();
       if (stopHuggingTimerRef.current) clearTimeout(stopHuggingTimerRef.current);
     };
   }, [triggerHearts, fireHeartConfetti, userName]);
@@ -611,7 +611,7 @@ export default function Home() {
       .subscribe();
 
     return () => {
-      supabase.removeChannel(logsChannel);
+      logsChannel.unsubscribe();
     };
   }, []);
 
@@ -692,8 +692,12 @@ export default function Home() {
     let timer: NodeJS.Timeout;
     if (specialConnection) {
       // Haptic Feedback: Nhịp tim khi kết nối thành công
-      if (typeof navigator !== 'undefined' && navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
+      try {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          navigator.vibrate([200, 100, 200]);
+        }
+      } catch (e) {
+        console.log('Vibrate not supported');
       }
 
       timer = setTimeout(() => {
@@ -704,7 +708,7 @@ export default function Home() {
   }, [specialConnection]);
 
   if (!mounted) {
-    return <div className="min-h-screen bg-rose-500" />;
+    return <div className="min-h-[100dvh] bg-rose-500" />;
   }
 
   return (
@@ -749,7 +753,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen bg-gradient-to-br from-rose-100/60 via-pink-50/50 to-rose-200/60 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
+      <main className="min-h-[100dvh] bg-gradient-to-br from-rose-100/60 via-pink-50/50 to-rose-200/60 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
       <FloatingHearts hearts={hearts} />
       
       {/* Synchronized Pulse Effect */}
@@ -792,16 +796,16 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(40px)' }}>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
           </h1>
-          <div className="flex justify-center mt-2">
+          <div className="flex justify-center mt-2 select-none" style={{ WebkitTouchCallout: 'none' }}>
             {!isSubscribed && (
               <button
                 onClick={subscribeToPush}
-                className="text-[10px] bg-white/20 hover:bg-white/40 text-white px-3 py-1 rounded-full border border-white/20 transition-all flex items-center gap-1"
+                className="text-[10px] bg-white/20 hover:bg-white/40 text-slate-600 px-3 py-1 rounded-full border border-white/20 transition-all flex items-center gap-1 active:scale-95"
               >
                 🔔 Nhận thông báo từ người ấy
               </button>
@@ -900,7 +904,8 @@ export default function Home() {
               onTouchStart={startHugging}
               onTouchEnd={stopHugging}
               onClick={sendHug}
-              className="group relative flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-400 to-purple-500 hover:from-rose-500 hover:to-purple-600 rounded-full shadow-lg shadow-rose-200/50 transition-all border border-white/40 backdrop-blur-sm"
+              className="group relative flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-400 to-purple-500 hover:from-rose-500 hover:to-purple-600 rounded-full shadow-lg shadow-rose-200/50 transition-all border border-white/40 backdrop-blur-sm select-none"
+              style={{ WebkitTouchCallout: 'none' }}
             >
               <Heart className={`w-10 h-10 transition-all duration-300 ${specialConnection ? 'text-white fill-white animate-pulse' : 'text-white/90'}`} />
             </motion.button>
@@ -938,7 +943,7 @@ export default function Home() {
               <h2 className="text-2xl font-black text-slate-800 tracking-tight">Chào mừng bạn! ✨</h2>
               <p className="text-slate-500 font-medium">Bạn là ai trong hai người nhỉ?</p>
             </div>
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 select-none" style={{ WebkitTouchCallout: 'none' }}>
               <button
                 className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-rose-400 to-rose-500 p-4 transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-rose-200"
                 onClick={() => {
@@ -967,7 +972,7 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-md mt-8">
-        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6">
+        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6" style={{ WebkitBackdropFilter: 'blur(40px)' }}>
           <div className="text-slate-800 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span className="text-lg">📔 Nhật ký</span>
@@ -994,7 +999,7 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mt-6">
-        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4">
+        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4" style={{ WebkitBackdropFilter: 'blur(40px)' }}>
           <div className="text-slate-800 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
@@ -1004,7 +1009,8 @@ export default function Home() {
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <button
-              className="rounded-2xl bg-gradient-to-r from-rose-400 to-purple-500 text-white px-4 py-2 text-sm font-bold hover:from-rose-500 hover:to-purple-600 transition shadow-md shadow-rose-200/50"
+              className="rounded-2xl bg-gradient-to-r from-rose-400 to-purple-500 text-white px-4 py-2 text-sm font-bold hover:from-rose-500 hover:to-purple-600 transition shadow-md shadow-rose-200/50 active:scale-95 select-none"
+              style={{ WebkitTouchCallout: 'none' }}
               onClick={addBucketItem}
             >
               Thêm
@@ -1032,7 +1038,8 @@ export default function Home() {
                     </label>
                     <button
                       onClick={() => deleteBucketItem(it.id)}
-                      className="text-slate-300 hover:text-rose-400 transition-colors p-1"
+                      className="text-slate-300 hover:text-rose-400 transition-colors p-1 active:scale-90 select-none"
+                      style={{ WebkitTouchCallout: 'none' }}
                       title="Xóa"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -1046,10 +1053,10 @@ export default function Home() {
             </ul>
           </div>
           {bucketItems.some((it) => it.is_completed) && (
-            <div className="flex justify-end pt-2 border-t border-rose-100">
+            <div className="flex justify-end pt-2 border-t border-rose-100 select-none" style={{ WebkitTouchCallout: 'none' }}>
               <button
                 onClick={deleteCompletedItems}
-                className="text-[10px] text-rose-400 hover:text-rose-600 transition-colors font-bold uppercase tracking-wider"
+                className="text-[10px] text-rose-400 hover:text-rose-600 transition-colors font-bold uppercase tracking-wider active:scale-95"
               >
                 Xóa việc đã hoàn thành
               </button>
@@ -1071,7 +1078,7 @@ export default function Home() {
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={() => setIsFormOpen(true)}
-            className="w-14 h-14 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm"
+            className="w-14 h-14 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm active:scale-90 transition-transform"
           >
             <Plus size={28} />
           </motion.button>
@@ -1096,11 +1103,11 @@ export default function Home() {
                 className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-2xl rounded-t-[32px] p-6 pb-10 z-[70] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] border-t border-white/50"
               >
                 <div className="w-12 h-1.5 bg-rose-100 rounded-full mx-auto mb-6" />
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-center mb-6 select-none" style={{ WebkitTouchCallout: 'none' }}>
                   <h3 className="text-xl font-bold text-rose-900">
                     {editingMemory ? 'Chỉnh sửa kỷ niệm' : 'Thêm kỷ niệm mới'}
                   </h3>
-                  <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-50 text-rose-400">
+                  <button onClick={cancelEditing} className="p-2 rounded-full bg-rose-50 text-rose-400 active:scale-90 transition-transform">
                     <X size="20" />
                   </button>
                 </div>
@@ -1119,7 +1126,7 @@ export default function Home() {
                     onChange={(e) => setNewMemContent(e.target.value)}
                   />
                   
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 select-none" style={{ WebkitTouchCallout: 'none' }}>
                     <label className="flex items-center gap-2 cursor-pointer group flex-1">
                       <div className="p-3 rounded-2xl bg-white/60 text-slate-600 group-active:scale-95 transition-all shadow-sm border border-white/50 flex items-center justify-center gap-2 w-full font-bold">
                         <ImageIcon size="20" className="text-rose-400" />
@@ -1135,7 +1142,7 @@ export default function Home() {
                     {selectedFile && (
                       <div className="flex-1 flex items-center gap-2 bg-rose-50/50 p-2 rounded-xl border border-rose-100">
                         <span className="text-xs font-bold text-rose-400 truncate flex-1">{selectedFile.name}</span>
-                        <button onClick={() => setSelectedFile(null)} className="text-rose-300"><X size="14" /></button>
+                        <button onClick={() => setSelectedFile(null)} className="text-rose-300 p-1 active:scale-90"><X size="14" /></button>
                       </div>
                     )}
                   </div>
@@ -1144,9 +1151,10 @@ export default function Home() {
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     disabled={uploading}
-                    className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
+                    className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg flex items-center justify-center gap-2 select-none ${
                       editingMemory ? 'bg-gradient-to-r from-emerald-400 to-teal-500 shadow-emerald-100' : 'bg-gradient-to-r from-rose-400 to-purple-500 shadow-rose-100'
-                    } text-white disabled:opacity-50`}
+                    } text-white disabled:opacity-50 active:brightness-110`}
+                    style={{ WebkitTouchCallout: 'none' }}
                     onClick={editingMemory ? updateMemory : addMemory}
                   >
                     {uploading ? <Loader2 className="animate-spin" /> : (editingMemory ? 'Cập nhật' : 'Lưu giữ ngay ✨')}
@@ -1184,13 +1192,13 @@ export default function Home() {
               >
                 <div className="flex justify-between items-center gap-2">
                   <h3 className="text-slate-800 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
-                  <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity select-none" style={{ WebkitTouchCallout: 'none' }}>
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => startEditing(mem)}
-                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-emerald-500 hover:bg-white transition-all border border-white shadow-sm"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-emerald-500 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
                     >
                       <Pencil size="18" />
                     </motion.button>
@@ -1199,7 +1207,7 @@ export default function Home() {
                       whileTap={{ scale: 0.9 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => deleteMemory(mem.id)}
-                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-rose-500 hover:bg-white transition-all border border-white shadow-sm"
+                      className="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/80 text-slate-400 hover:text-rose-500 hover:bg-white transition-all border border-white shadow-sm active:scale-90"
                     >
                       <Trash2 size="18" />
                     </motion.button>
@@ -1258,10 +1266,10 @@ export default function Home() {
         </div>
 
         {filteredMemories.length > displayCount && (
-          <div className="flex justify-center pt-8">
+          <div className="flex justify-center pt-8 select-none" style={{ WebkitTouchCallout: 'none' }}>
             <button
               onClick={() => setDisplayCount(prev => prev + 6)}
-              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 text-slate-600 text-sm font-bold hover:bg-white/60 hover:text-rose-500 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 text-slate-600 text-sm font-bold hover:bg-white/60 hover:text-rose-500 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.2)] active:scale-95"
             >
               <span>Xem thêm ký ức ✨</span>
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
