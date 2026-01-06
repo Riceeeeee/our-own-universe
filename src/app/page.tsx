@@ -60,12 +60,14 @@ const CustomAudioPlayer = ({ src }: { src: string }) => {
         onEnded={() => setIsPlaying(false)}
         className="hidden" 
       />
-      <button 
+      <motion.button 
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={togglePlay}
-        className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md active:scale-90 transition-transform"
+        className="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md transition-transform"
       >
         {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
-      </button>
+      </motion.button>
       <div className="flex-1 h-1.5 bg-rose-200 rounded-full overflow-hidden relative">
         <motion.div 
           initial={false}
@@ -887,7 +889,8 @@ export default function Home() {
         <div className="fixed bottom-6 left-6 z-40">
           <motion.button
             whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9, type: "spring", stiffness: 400, damping: 17 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
             onClick={() => setIsFormOpen(true)}
             className="w-14 h-14 bg-rose-500 text-white rounded-full shadow-2xl flex items-center justify-center border-4 border-white/50 backdrop-blur-sm"
           >
@@ -958,15 +961,17 @@ export default function Home() {
                     )}
                   </div>
 
-                  <button
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     disabled={uploading}
-                    className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 ${
+                    className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
                       editingMemory ? 'bg-emerald-500 shadow-emerald-200' : 'bg-rose-500 shadow-rose-200'
                     } text-white disabled:opacity-50`}
                     onClick={editingMemory ? updateMemory : addMemory}
                   >
                     {uploading ? <Loader2 className="animate-spin" /> : (editingMemory ? 'Cập nhật' : 'Lưu giữ ngay')}
-                  </button>
+                  </motion.button>
                 </div>
               </motion.div>
             </>
@@ -1001,18 +1006,24 @@ export default function Home() {
                 <div className="flex justify-between items-center gap-2">
                   <h3 className="text-rose-900 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
                   <div className="flex gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => startEditing(mem)}
-                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-emerald-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm active:scale-90"
+                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-emerald-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm"
                     >
                       <Pencil size="20" />
-                    </button>
-                    <button
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       onClick={() => deleteMemory(mem.id)}
-                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-rose-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm active:scale-90"
+                      className="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/60 text-rose-900/40 hover:text-rose-500 hover:bg-white/80 transition-all border border-white/40 shadow-sm"
                     >
                       <Trash2 size="20" />
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
 
