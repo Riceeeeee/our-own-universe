@@ -877,6 +877,19 @@ export default function Home() {
                   <span className="text-xl font-bold text-slate-800 text-center px-4">
                     {getMoodInfo(mood).text}
                   </span>
+                  <motion.p
+                    key={`subtext-${mood <= 30 ? 'sad' : mood <= 70 ? 'normal' : 'happy'}`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1 }}
+                    className="text-xs sm:text-sm font-medium text-slate-600/80 italic text-center px-6 leading-relaxed"
+                  >
+                    {mood <= 30 
+                      ? 'Yên tâm, có mình luôn ở đây với cậu nhé! 💙' 
+                      : mood <= 70 
+                        ? 'Cứ nhẹ nhàng và bình yên như thế này thôi cậu nhé. ✨' 
+                        : 'Hạnh phúc ngập tràn cả vũ trụ của hai đứa mình luôn! 💖'}
+                  </motion.p>
                   <span className="text-sm font-medium text-slate-800">
                     (Mức độ: {mood}%)
                   </span>
