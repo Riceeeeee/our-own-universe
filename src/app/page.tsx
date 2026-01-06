@@ -88,6 +88,8 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(false);
+  const [presenceState, setPresenceState] = useState<Record<string, { isHugging: boolean }>>({});
+  const [specialConnection, setSpecialConnection] = useState(false);
   const hugChannelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
   const heartShapeRef = useRef<ReturnType<typeof confetti.shapeFromPath> | null>(null);
   const [userName, setUserName] = useState<string | null>(() => {
@@ -533,7 +535,10 @@ export default function Home() {
 
     // 2. Listen to Broadcast for Hugs (self + others)
     const hugChannel = supabase.channel('global_hug_channel', {
-      config: { broadcast: { self: true } },
+      config: { 
+        broadcast: { self: true },
+        presence: { key: userName ?? 'Ẩn danh' }
+      },
     });
     hugChannelRef.current = hugChannel;
 
@@ -552,7 +557,31 @@ export default function Home() {
         setShowPulse(true);
         setTimeout(() => setShowPulse(false), 1000);
       })
-      .subscribe();
+      .on('presence', { event: 'sync' }, () => {
+        const state = hugChannel.presenceState<{ isHugging: boolean }>();
+        const newState: Record<string, { isHugging: boolean }> = {};
+        
+        Object.keys(state).forEach(key => {
+          newState[key] = state[key][0];
+        });
+        
+        setPresenceState(newState);
+        
+        // Logic Kết nối: Check if both Quang and Linh are hugging
+        const isQuangHugging = newState['Quang']?.isHugging || false;
+        const isLinhHugging = newState['Linh']?.isHugging || false;
+        
+        if (isQuangHugging && isLinhHugging) {
+          setSpecialConnection(true);
+        } else {
+          setSpecialConnection(false);
+        }
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await hugChannel.track({ isHugging: false });
+        }
+      });
 
     return () => {
       supabase.removeChannel(moodSubscription);
@@ -612,7 +641,10 @@ export default function Home() {
     // Send to other user
     if (!hugChannelRef.current) {
       hugChannelRef.current = supabase.channel('global_hug_channel', {
-        config: { broadcast: { self: true } },
+        config: { 
+          broadcast: { self: true },
+          presence: { key: userName ?? 'Ẩn danh' }
+        },
       }).subscribe();
     }
     
@@ -625,6 +657,29 @@ export default function Home() {
     
     await insertLog('vừa gửi một cái ôm');
   };
+
+  const startHugging = async () => {
+    if (hugChannelRef.current) {
+      await hugChannelRef.current.track({ isHugging: true });
+    }
+  };
+
+  const stopHugging = async () => {
+    if (hugChannelRef.current) {
+      await hugChannelRef.current.track({ isHugging: false });
+    }
+  };
+
+  // Tự động tắt SpecialConnection sau 30 giây
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (specialConnection) {
+      timer = setTimeout(() => {
+        setSpecialConnection(false);
+      }, 30000);
+    }
+    return () => clearTimeout(timer);
+  }, [specialConnection]);
 
   if (!mounted) {
     return <div className="min-h-screen bg-rose-500" />;
@@ -689,6 +744,29 @@ export default function Home() {
           >
             <div className="w-64 h-64 rounded-full bg-rose-400/30 blur-3xl border-8 border-rose-300/20" />
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Special Connection Glowing Border */}
+      <AnimatePresence>
+        {specialConnection && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0.4, 0.8, 0.4],
+              boxShadow: [
+                "inset 0 0 40px rgba(251, 113, 133, 0.4), inset 0 0 80px rgba(251, 113, 133, 0.2)",
+                "inset 0 0 60px rgba(251, 113, 133, 0.8), inset 0 0 120px rgba(251, 113, 133, 0.4)",
+                "inset 0 0 40px rgba(251, 113, 133, 0.4), inset 0 0 80px rgba(251, 113, 133, 0.2)"
+              ]
+            }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="fixed inset-0 z-[90] pointer-events-none border-[12px] border-rose-400/20"
+            style={{
+              background: "linear-gradient(to right, rgba(251, 113, 133, 0.1), transparent, rgba(251, 113, 133, 0.1))"
+            }}
+          />
         )}
       </AnimatePresence>
 
@@ -772,16 +850,49 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex justify-center pt-4">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={sendHug}
-            className="group relative inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-rose-500 font-bold shadow-lg hover:bg-rose-50 transition-all"
-          >
-            <Heart className="h-6 w-6 fill-current group-hover:animate-bounce" />
-            <span>Gửi một cái ôm</span>
-          </motion.button>
+        <div className="flex flex-col items-center gap-6 pt-4">
+          <div className="flex items-center gap-8">
+            <div className="flex flex-col items-center gap-2">
+              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Quang']?.isHugging ? 'border-emerald-400 scale-110' : 'border-white/40'}`}>
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-200 flex items-center justify-center text-rose-500 font-bold">Q</div>
+                {presenceState['Quang']?.isHugging && (
+                  <motion.div 
+                    layoutId="glow-q"
+                    className="absolute -inset-1 rounded-full border-2 border-emerald-400 animate-ping opacity-50" 
+                  />
+                )}
+              </div>
+              <span className="text-[10px] text-white/60 font-medium">Quang</span>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onMouseDown={startHugging}
+              onMouseUp={stopHugging}
+              onTouchStart={startHugging}
+              onTouchEnd={stopHugging}
+              onClick={sendHug}
+              className="group relative flex items-center justify-center w-20 h-20 bg-white/20 hover:bg-white/30 rounded-full shadow-xl transition-all border border-white/40 backdrop-blur-sm"
+            >
+              <Heart className={`w-10 h-10 transition-all duration-300 ${specialConnection ? 'text-rose-400 fill-rose-400 animate-pulse' : 'text-white'}`} />
+            </motion.button>
+
+            <div className="flex flex-col items-center gap-2">
+              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Linh']?.isHugging ? 'border-emerald-400 scale-110' : 'border-white/40'}`}>
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-200 flex items-center justify-center text-rose-500 font-bold">L</div>
+                {presenceState['Linh']?.isHugging && (
+                  <motion.div 
+                    layoutId="glow-l"
+                    className="absolute -inset-1 rounded-full border-2 border-emerald-400 animate-ping opacity-50" 
+                  />
+                )}
+              </div>
+              <span className="text-[10px] text-white/60 font-medium">Linh</span>
+            </div>
+          </div>
+          
+          <p className="text-[11px] text-white/40 italic">Nhấn để gửi, nhấn giữ cùng nhau để kết nối</p>
         </div>
       </div>
       
