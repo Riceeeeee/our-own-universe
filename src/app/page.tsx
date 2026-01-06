@@ -850,7 +850,13 @@ export default function Home() {
             onValueCommit={handleMoodCommit}
           />
           
-          <div className="h-32 flex items-center justify-center">
+          <div className={`h-32 flex items-center justify-center rounded-[2rem] border border-white/50 backdrop-blur-xl transition-colors duration-500 ease-in-out shadow-lg ${
+            mood <= 30 
+              ? 'bg-blue-100/40' 
+              : mood <= 70 
+                ? 'bg-green-100/40' 
+                : 'bg-gradient-to-br from-rose-400/50 to-pink-500/50'
+          }`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
             {loading ? (
               <p className="text-slate-800 text-lg animate-pulse">Đang kết nối...</p>
             ) : (
