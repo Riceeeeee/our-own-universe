@@ -796,7 +796,13 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/20 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-700 ease-in-out ${
+        mood <= 30 
+          ? 'bg-blue-100/20' 
+          : mood <= 70 
+            ? 'bg-emerald-50/20' 
+            : 'bg-rose-200/30'
+      }`} style={{ WebkitBackdropFilter: 'blur(40px)' }}>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
@@ -850,13 +856,7 @@ export default function Home() {
             onValueCommit={handleMoodCommit}
           />
           
-          <div className={`h-32 flex items-center justify-center rounded-[2rem] border border-white/50 backdrop-blur-xl transition-colors duration-500 ease-in-out shadow-lg ${
-            mood <= 30 
-              ? 'bg-blue-100/40' 
-              : mood <= 70 
-                ? 'bg-green-100/40' 
-                : 'bg-gradient-to-br from-rose-400/50 to-pink-500/50'
-          }`} style={{ WebkitBackdropFilter: 'blur(20px)' }}>
+          <div className="h-32 flex items-center justify-center rounded-[2rem] border border-white/20 transition-all duration-700 ease-in-out">
             {loading ? (
               <p className="text-slate-800 text-lg animate-pulse">Đang kết nối...</p>
             ) : (
