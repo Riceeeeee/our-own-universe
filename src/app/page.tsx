@@ -850,7 +850,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-6 pt-4">
+        <div className="flex flex-col items-center gap-6 pt-4 select-none" style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}>
           <div className="flex items-center gap-8">
             <div className="flex flex-col items-center gap-2">
               <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Quang']?.isHugging ? 'border-emerald-400 scale-110' : 'border-white/40'}`}>
@@ -1023,7 +1023,7 @@ export default function Home() {
         </div>
 
         {/* Floating Action Button */}
-        <div className="fixed bottom-6 left-6 z-40">
+        <div className="fixed bottom-6 left-6 z-40 select-none" style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
