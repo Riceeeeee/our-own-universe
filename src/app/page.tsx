@@ -749,9 +749,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main
-        className="flex min-h-screen flex-col items-center justify-center p-8 bg-[#FCE4EC] transition-colors duration-700 ease-in-out"
-      >
+      <main className="min-h-screen bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-rose-100 via-purple-100 to-sky-100 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
       <FloatingHearts hearts={hearts} />
       
       {/* Synchronized Pulse Effect */}
@@ -794,9 +792,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 rounded-3xl p-8 backdrop-blur-md shadow-2xl border border-white/20 transition-all duration-500 ${getMoodCardColor(mood)}`}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] transition-all duration-500`}>
         <div className="text-center space-y-2">
-          <h1 className={`text-4xl font-bold drop-shadow-md ${getTextColor(mood)}`}>
+          <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
           </h1>
           <div className="flex justify-center mt-2">
@@ -811,10 +809,10 @@ export default function Home() {
           </div>
           <motion.div
             animate={{
-              color: ['#ffffff', '#fecaca', '#ffffff'],
+              color: ['#1e293b', '#64748b', '#1e293b'],
               textShadow: [
                 '0 0 0px rgba(255,255,255,0)',
-                '0 0 10px rgba(255,255,255,0.5)',
+                '0 0 10px rgba(255,255,255,0.2)',
                 '0 0 0px rgba(255,255,255,0)',
               ],
             }}
@@ -827,13 +825,13 @@ export default function Home() {
           >
             Quang <span className="text-rose-400">❤️</span> Linh
           </motion.div>
-          <p className={`${getTextColor(mood)}/90 text-sm sm:text-base`}>
+          <p className="text-slate-600 font-medium text-sm sm:text-base">
             Chúng mình đã bên nhau: {elapsed.days} ngày, {elapsed.hours} giờ, {elapsed.minutes} phút, {elapsed.seconds} giây
           </p>
         </div>
 
         <div className="space-y-6">
-          <div className={`flex justify-between ${getTextColor(mood)}/60 text-sm font-medium px-1`}>
+          <div className="flex justify-between text-slate-400 text-sm font-medium px-1">
             <span>Buồn</span>
             <span>Bình thường</span>
             <span>Vui vẻ</span>
@@ -850,7 +848,7 @@ export default function Home() {
           
           <div className="h-32 flex items-center justify-center">
             {loading ? (
-              <p className={`${getTextColor(mood)}/80 text-lg animate-pulse`}>Đang kết nối...</p>
+              <p className="text-slate-400 text-lg animate-pulse">Đang kết nối...</p>
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
@@ -862,10 +860,10 @@ export default function Home() {
                   className="flex flex-col items-center gap-2"
                 >
                   <span className="text-6xl drop-shadow-xl filter">{getMoodInfo(mood).emoji}</span>
-                  <span className={`text-xl font-bold ${getTextColor(mood)} text-center px-4`}>
+                  <span className="text-xl font-bold text-slate-800 text-center px-4">
                     {getMoodInfo(mood).text}
                   </span>
-                  <span className={`text-sm font-medium ${getTextColor(mood)}/60`}>
+                  <span className="text-sm font-medium text-slate-400">
                     (Mức độ: {mood}%)
                   </span>
                 </motion.div>
@@ -877,8 +875,8 @@ export default function Home() {
         <div className="flex flex-col items-center gap-6 pt-4 select-none" style={{ WebkitTouchCallout: 'none', WebkitUserSelect: 'none' }}>
           <div className="flex items-center gap-8">
             <div className="flex flex-col items-center gap-2">
-              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Quang']?.isHugging ? 'border-emerald-400 scale-110' : 'border-white/40'}`}>
-                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-200 flex items-center justify-center text-rose-500 font-bold">Q</div>
+              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Quang']?.isHugging ? 'border-emerald-400 scale-110' : 'border-slate-200'}`}>
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-100 flex items-center justify-center text-rose-500 font-bold">Q</div>
                 {presenceState['Quang']?.isHugging && (
                   <motion.div 
                     layoutId="glow-q"
@@ -887,10 +885,10 @@ export default function Home() {
                 )}
                 {/* Online/Offline Status Dot */}
                 <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white z-50 transition-colors duration-300 ${
-                  presenceState['Quang'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-400'
+                  presenceState['Quang'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-300'
                 }`} />
               </div>
-              <span className="text-[10px] text-white/60 font-medium">Quang</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Quang</span>
             </div>
 
             <motion.button
@@ -902,14 +900,14 @@ export default function Home() {
               onTouchStart={startHugging}
               onTouchEnd={stopHugging}
               onClick={sendHug}
-              className="group relative flex items-center justify-center w-20 h-20 bg-white/20 hover:bg-white/30 rounded-full shadow-xl transition-all border border-white/40 backdrop-blur-sm"
+              className="group relative flex items-center justify-center w-20 h-20 bg-gradient-to-r from-rose-400 to-purple-500 hover:from-rose-500 hover:to-purple-600 rounded-full shadow-lg shadow-rose-200/50 transition-all border border-white/40 backdrop-blur-sm"
             >
-              <Heart className={`w-10 h-10 transition-all duration-300 ${specialConnection ? 'text-rose-400 fill-rose-400 animate-pulse' : 'text-white'}`} />
+              <Heart className={`w-10 h-10 transition-all duration-300 ${specialConnection ? 'text-white fill-white animate-pulse' : 'text-white/90'}`} />
             </motion.button>
 
             <div className="flex flex-col items-center gap-2">
-              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Linh']?.isHugging ? 'border-emerald-400 scale-110' : 'border-white/40'}`}>
-                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-200 flex items-center justify-center text-rose-500 font-bold">L</div>
+              <div className={`relative w-14 h-14 rounded-full border-2 transition-all duration-300 ${presenceState['Linh']?.isHugging ? 'border-emerald-400 scale-110' : 'border-slate-200'}`}>
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-rose-100 flex items-center justify-center text-rose-500 font-bold">L</div>
                 {presenceState['Linh']?.isHugging && (
                   <motion.div 
                     layoutId="glow-l"
@@ -918,14 +916,14 @@ export default function Home() {
                 )}
                 {/* Online/Offline Status Dot */}
                 <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white z-50 transition-colors duration-300 ${
-                  presenceState['Linh'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-400'
+                  presenceState['Linh'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-300'
                 }`} />
               </div>
-              <span className="text-[10px] text-white/60 font-medium">Linh</span>
+              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Linh</span>
             </div>
           </div>
           
-          <p className="text-[11px] text-white/40 italic">Nhấn để gửi, nhấn giữ cùng nhau để kết nối</p>
+          <p className="text-[11px] text-slate-400 font-medium italic">Nhấn để gửi, nhấn giữ cùng nhau để kết nối</p>
         </div>
       </div>
       
@@ -958,25 +956,25 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-md mt-8">
-        <div className="rounded-2xl bg-white/40 backdrop-blur-md border border-white/40 p-4 shadow-sm">
-          <div className="text-rose-900 font-bold flex justify-between items-center">
+        <div className="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] p-6">
+          <div className="text-slate-800 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <span>Nhật ký</span>
-              {userName && <span className="text-[10px] bg-rose-500/10 text-rose-600 px-2 py-0.5 rounded-full font-bold border border-rose-200">Bạn là {userName}</span>}
+              <span className="text-lg">📔 Nhật ký</span>
+              {userName && <span className="text-[10px] bg-rose-100 text-rose-500 px-2 py-0.5 rounded-full font-bold border border-rose-200">Bạn là {userName}</span>}
             </div>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </div>
-          <div className="mt-3 space-y-2 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-200">
+          <div className="mt-4 space-y-3 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-200">
             {logs.map((log, i) => (
-              <div key={i} className="text-sm text-rose-800/80 border-l-2 border-rose-300 pl-3 py-1">
-                <span className="font-semibold text-rose-900">{log.user_name}</span> {log.content}
-                <div className="text-[10px] opacity-50 mt-0.5">
+              <div key={i} className="text-sm text-slate-600 border-l-2 border-rose-200 pl-3 py-1">
+                <span className="font-bold text-slate-800">{log.user_name}</span> {log.content}
+                <div className="text-[10px] text-slate-400 mt-0.5 font-medium">
                   {new Date(log.created_at).toLocaleTimeString('vi-VN')}
                 </div>
               </div>
             ))}
             {logs.length === 0 && (
-              <div className="text-rose-800/50 text-xs italic">
+              <div className="text-slate-400 text-xs italic text-center py-4">
                 Chưa có dòng nhật ký nào. Hãy bắt đầu bằng cách kéo thanh trượt hoặc gửi một cái ôm.
               </div>
             )}
@@ -985,17 +983,17 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mt-6">
-        <div className="rounded-2xl bg-white/40 backdrop-blur-md border border-white/40 p-4 space-y-3 shadow-sm">
-          <div className="text-rose-900 font-bold">Danh sách việc muốn làm cùng nhau</div>
+        <div className="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] p-6 space-y-4">
+          <div className="text-slate-800 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
-              className="flex-1 rounded-xl bg-white/80 px-3 py-2 text-sm text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300"
+              className="flex-1 rounded-2xl bg-white/60 px-4 py-2 text-sm text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 border border-white/40 shadow-inner"
               placeholder="Nhập kế hoạch..."
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
             />
             <button
-              className="rounded-xl bg-rose-500 text-white px-4 py-2 text-sm font-semibold hover:bg-rose-600 transition shadow-sm"
+              className="rounded-2xl bg-gradient-to-r from-rose-400 to-purple-500 text-white px-4 py-2 text-sm font-bold hover:from-rose-500 hover:to-purple-600 transition shadow-md shadow-rose-200/50"
               onClick={addBucketItem}
             >
               Thêm
@@ -1006,11 +1004,11 @@ export default function Home() {
               {bucketItems.map((it) => (
                 <li
                   key={it.id}
-                  className="flex items-center justify-between rounded-xl bg-white/30 px-3 py-2 text-rose-900 shadow-sm border border-white/20"
+                  className="flex items-center justify-between rounded-2xl bg-white/40 px-4 py-3 text-slate-700 shadow-sm border border-white/40 transition-all hover:bg-white/60"
                 >
-                  <div className={`text-sm ${it.is_completed ? 'line-through text-rose-900/40' : ''}`}>
-                    <span className="font-semibold">{it.title}</span>
-                    <span className="ml-2 text-[10px] text-rose-900/50">• {it.created_by}</span>
+                  <div className={`text-sm ${it.is_completed ? 'line-through text-slate-400' : 'font-medium'}`}>
+                    <span>{it.title}</span>
+                    <span className="ml-2 text-[10px] text-slate-400 font-bold">• {it.created_by}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <label className="inline-flex items-center gap-2 text-xs cursor-pointer">
@@ -1018,12 +1016,12 @@ export default function Home() {
                         type="checkbox"
                         checked={it.is_completed}
                         onChange={() => toggleBucketItem(it)}
-                        className="h-4 w-4 accent-rose-500 rounded border-rose-300"
+                        className="h-4 w-4 accent-rose-400 rounded-lg border-rose-200"
                       />
                     </label>
                     <button
                       onClick={() => deleteBucketItem(it.id)}
-                      className="text-rose-900/30 hover:text-rose-500 transition-colors"
+                      className="text-slate-300 hover:text-rose-400 transition-colors p-1"
                       title="Xóa"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -1032,17 +1030,17 @@ export default function Home() {
                 </li>
               ))}
               {bucketItems.length === 0 && (
-                <li className="text-rose-900/40 text-xs italic text-center py-2">Chưa có kế hoạch nào.</li>
+                <li className="text-slate-400 text-xs italic text-center py-4">Chưa có kế hoạch nào.</li>
               )}
             </ul>
           </div>
           {bucketItems.some((it) => it.is_completed) && (
-            <div className="flex justify-end pt-2 border-t border-rose-200">
+            <div className="flex justify-end pt-2 border-t border-rose-100">
               <button
                 onClick={deleteCompletedItems}
-                className="text-[10px] text-rose-400 hover:text-rose-600 transition-colors font-medium"
+                className="text-[10px] text-rose-400 hover:text-rose-600 transition-colors font-bold uppercase tracking-wider"
               >
-                Xóa tất cả việc đã hoàn thành
+                Xóa việc đã hoàn thành
               </button>
             </div>
           )}
@@ -1051,8 +1049,8 @@ export default function Home() {
 
       <div className="w-full max-w-4xl mt-12 space-y-8 pb-12">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-rose-900 drop-shadow-sm">Bảo tàng kỷ niệm</h2>
-          <p className="text-rose-800/60 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
+          <h2 className="text-3xl font-bold text-slate-800 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
+          <p className="text-slate-600 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
         </div>
 
         {/* Floating Action Button */}
@@ -1098,13 +1096,13 @@ export default function Home() {
 
                 <div className="space-y-4">
                   <input
-                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 transition-all"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-inner"
                     placeholder="Tiêu đề kỷ niệm..."
                     value={newMemTitle}
                     onChange={(e) => setNewMemTitle(e.target.value)}
                   />
                   <textarea
-                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-rose-900 placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-300 min-h-[120px] resize-none"
+                    className="w-full rounded-2xl bg-white/50 border border-rose-100 px-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 min-h-[120px] resize-none shadow-inner"
                     placeholder="Nội dung kỷ niệm..."
                     value={newMemContent}
                     onChange={(e) => setNewMemContent(e.target.value)}
@@ -1112,9 +1110,9 @@ export default function Home() {
                   
                   <div className="flex items-center gap-4">
                     <label className="flex items-center gap-2 cursor-pointer group flex-1">
-                      <div className="p-3 rounded-2xl bg-rose-50 text-rose-500 group-active:scale-95 transition-all shadow-sm border border-rose-100 flex items-center justify-center gap-2 w-full">
-                        <ImageIcon size="20" />
-                        <span className="text-sm font-bold">Thêm ảnh/nhạc</span>
+                      <div className="p-3 rounded-2xl bg-white/60 text-slate-600 group-active:scale-95 transition-all shadow-sm border border-white/50 flex items-center justify-center gap-2 w-full font-bold">
+                        <ImageIcon size="20" className="text-rose-400" />
+                        <span className="text-sm">Thêm ảnh/nhạc</span>
                       </div>
                       <input
                         type="file"
@@ -1125,7 +1123,7 @@ export default function Home() {
                     </label>
                     {selectedFile && (
                       <div className="flex-1 flex items-center gap-2 bg-rose-50/50 p-2 rounded-xl border border-rose-100">
-                        <span className="text-xs font-medium text-rose-400 truncate flex-1">{selectedFile.name}</span>
+                        <span className="text-xs font-bold text-rose-400 truncate flex-1">{selectedFile.name}</span>
                         <button onClick={() => setSelectedFile(null)} className="text-rose-300"><X size="14" /></button>
                       </div>
                     )}
@@ -1136,11 +1134,11 @@ export default function Home() {
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     disabled={uploading}
                     className={`w-full rounded-2xl py-4 text-base font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${
-                      editingMemory ? 'bg-emerald-500 shadow-emerald-200' : 'bg-rose-500 shadow-rose-200'
+                      editingMemory ? 'bg-gradient-to-r from-emerald-400 to-teal-500 shadow-emerald-100' : 'bg-gradient-to-r from-rose-400 to-purple-500 shadow-rose-100'
                     } text-white disabled:opacity-50`}
                     onClick={editingMemory ? updateMemory : addMemory}
                   >
-                    {uploading ? <Loader2 className="animate-spin" /> : (editingMemory ? 'Cập nhật' : 'Lưu giữ ngay')}
+                    {uploading ? <Loader2 className="animate-spin" /> : (editingMemory ? 'Cập nhật' : 'Lưu giữ ngay ✨')}
                   </motion.button>
                 </div>
               </motion.div>
