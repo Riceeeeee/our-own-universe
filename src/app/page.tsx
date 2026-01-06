@@ -749,7 +749,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <main className="min-h-screen bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-rose-100 via-purple-100 to-sky-100 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
+      <main className="min-h-screen bg-gradient-to-br from-rose-100/60 via-pink-50/50 to-rose-200/60 transition-colors duration-700 ease-in-out flex flex-col items-center justify-center p-4 sm:p-8">
       <FloatingHearts hearts={hearts} />
       
       {/* Synchronized Pulse Effect */}
@@ -792,7 +792,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] transition-all duration-500`}>
+      <div className={`z-10 w-full max-w-md space-y-12 p-6 sm:p-8 bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] transition-all duration-500`}>
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold drop-shadow-sm text-slate-800">
             Our Universe
@@ -825,7 +825,7 @@ export default function Home() {
           >
             Quang <span className="text-rose-400">❤️</span> Linh
           </motion.div>
-          <p className="text-slate-600 font-medium text-sm sm:text-base">
+          <p className="text-slate-700 font-medium text-sm sm:text-base">
             Chúng mình đã bên nhau: {elapsed.days} ngày, {elapsed.hours} giờ, {elapsed.minutes} phút, {elapsed.seconds} giây
           </p>
         </div>
@@ -967,7 +967,7 @@ export default function Home() {
       )}
 
       <div className="w-full max-w-md mt-8">
-        <div className="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] p-6">
+        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6">
           <div className="text-slate-800 font-bold flex justify-between items-center">
             <div className="flex items-center gap-2">
               <span className="text-lg">📔 Nhật ký</span>
@@ -977,7 +977,7 @@ export default function Home() {
           </div>
           <div className="mt-4 space-y-3 max-h-40 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-rose-200">
             {logs.map((log, i) => (
-              <div key={i} className="text-sm text-slate-600 border-l-2 border-rose-200 pl-3 py-1">
+              <div key={i} className="text-sm text-slate-700 border-l-2 border-rose-200 pl-3 py-1">
                 <span className="font-bold text-slate-800">{log.user_name}</span> {log.content}
                 <div className="text-[10px] text-slate-400 mt-0.5 font-medium">
                   {new Date(log.created_at).toLocaleTimeString('vi-VN')}
@@ -994,7 +994,7 @@ export default function Home() {
       </div>
 
       <div className="w-full max-w-md mt-6">
-        <div className="bg-white/40 backdrop-blur-xl border border-white/50 shadow-2xl shadow-rose-100/50 rounded-[2rem] p-6 space-y-4">
+        <div className="bg-white/40 backdrop-blur-2xl border border-white/40 shadow-[0_8px_32px_0_rgba(255,182,193,0.3)] rounded-[2rem] p-6 space-y-4">
           <div className="text-slate-800 font-bold text-lg">📌 Việc muốn làm cùng nhau</div>
           <div className="flex gap-2">
             <input
@@ -1061,7 +1061,7 @@ export default function Home() {
       <div className="w-full max-w-4xl mt-12 space-y-8 pb-12">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-slate-800 drop-shadow-sm">🏛️ Bảo tàng kỷ niệm</h2>
-          <p className="text-slate-600 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
+          <p className="text-slate-700 text-sm mt-2 font-medium">Nơi lưu giữ những khoảnh khắc ngọt ngào của chúng mình</p>
         </div>
 
         {/* Floating Action Button */}
@@ -1163,7 +1163,7 @@ export default function Home() {
           </div>
           <input
             type="text"
-            className="w-full rounded-full bg-white/60 backdrop-blur-xl border border-white/80 pl-12 pr-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-lg shadow-rose-100/20"
+            className="w-full rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 pl-12 pr-4 py-3 text-base text-slate-800 placeholder-slate-300 outline-none focus:ring-2 focus:ring-rose-200 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.15)]"
             placeholder="Tìm kiếm ký ức..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -1180,7 +1180,7 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 whileHover={{ y: -8 }}
-                className="group rounded-[2.5rem] bg-white/50 backdrop-blur-xl border border-white/80 p-6 space-y-4 hover:bg-white/70 transition-all relative overflow-hidden shadow-xl shadow-rose-100/30"
+                className="group rounded-[2.5rem] bg-white/40 backdrop-blur-2xl border border-white/40 p-6 space-y-4 hover:bg-white/60 transition-all relative overflow-hidden shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
               >
                 <div className="flex justify-between items-center gap-2">
                   <h3 className="text-slate-800 font-bold text-xl leading-tight truncate min-w-0">{mem.title}</h3>
@@ -1220,7 +1220,7 @@ export default function Home() {
                   <CustomAudioPlayer src={mem.media_url} />
                 )}
 
-                <p className="text-slate-600 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
+                <p className="text-slate-700 text-base whitespace-pre-wrap leading-relaxed font-medium tracking-wide">
                   {mem.content}
                 </p>
                 <div className="flex justify-between items-center pt-4 border-t border-rose-100">
@@ -1261,7 +1261,7 @@ export default function Home() {
           <div className="flex justify-center pt-8">
             <button
               onClick={() => setDisplayCount(prev => prev + 6)}
-              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/60 backdrop-blur-xl border border-white/80 text-slate-600 text-sm font-bold hover:bg-white hover:text-rose-500 transition-all shadow-lg shadow-rose-100/20"
+              className="group flex items-center gap-2 px-8 py-3 rounded-full bg-white/40 backdrop-blur-2xl border border-white/40 text-slate-600 text-sm font-bold hover:bg-white/60 hover:text-rose-500 transition-all shadow-[0_8px_32px_0_rgba(255,182,193,0.2)]"
             >
               <span>Xem thêm ký ức ✨</span>
               <ChevronDown className="h-4 w-4 group-hover:translate-y-1 transition-transform" />
