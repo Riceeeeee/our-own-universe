@@ -885,6 +885,10 @@ export default function Home() {
                     className="absolute -inset-1 rounded-full border-2 border-emerald-400 animate-ping opacity-50" 
                   />
                 )}
+                {/* Online/Offline Status Dot */}
+                <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white z-50 transition-colors duration-300 ${
+                  presenceState['Quang'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-400'
+                }`} />
               </div>
               <span className="text-[10px] text-white/60 font-medium">Quang</span>
             </div>
@@ -912,6 +916,10 @@ export default function Home() {
                     className="absolute -inset-1 rounded-full border-2 border-emerald-400 animate-ping opacity-50" 
                   />
                 )}
+                {/* Online/Offline Status Dot */}
+                <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white z-50 transition-colors duration-300 ${
+                  presenceState['Linh'] ? 'bg-green-500 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-gray-400'
+                }`} />
               </div>
               <span className="text-[10px] text-white/60 font-medium">Linh</span>
             </div>
