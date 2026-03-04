@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
+import { VolumeX, Music } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MUSIC_URL = 'https://xapkuolecixkjmzwcope.supabase.co/storage/v1/object/public/memories_assets/0.9523935818320307.mp3';

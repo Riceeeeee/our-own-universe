@@ -4,23 +4,11 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { MoodSlider } from '@/components/MoodSlider';
 import { FloatingHearts } from '@/components/FloatingHearts';
-import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Mic, Loader2, Plus, Play, Pause, Volume2, ArrowRight } from 'lucide-react';
+import { Heart, Trash2, Search, Pencil, X, ChevronDown, Image as ImageIcon, Loader2, Plus, Play, Pause, Volume2, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 const VAPID_PUBLIC_KEY = 'BDUq_avuUv7N_Wo1fRo_zYtqQnfjTak61W14G1Zgp-y1LreXJuOWRfPkQTDXoigf3zL5QZ8YQwHG4Uo1dPSpPY8';
-
-// Helper to determine mood card background color
-const getMoodCardColor = (level: number) => {
-  if (level <= 40) return 'bg-blue-600/80'; // Buồn & Hơi buồn
-  if (level <= 60) return 'bg-emerald-500/80'; // Bình thường
-  return 'bg-rose-500/80'; // Vui & Hạnh phúc
-};
-
-const getTextColor = (level: number) => {
-  // Với các màu nền đậm trên, chữ trắng là tốt nhất
-  return 'text-white';
-};
 
 const getMoodInfo = (level: number) => {
   if (level <= 20) return { emoji: '☹️', text: 'Cần một cái ôm quá...' };
@@ -242,26 +230,29 @@ export default function Home() {
     const bucketChannel = supabase
       .channel('bucket-list')
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'bucket_list' },
-        (payload: { new: BucketItem }) => {
-          setBucketItems((prev) => [payload.new, ...prev]);
+        (payload: unknown) => {
+          const p = payload as { new: BucketItem }
+          setBucketItems((prev) => [p.new, ...prev]);
         }
       )
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'bucket_list' },
-        (payload: { new: BucketItem }) => {
+        (payload: unknown) => {
+          const p = payload as { new: BucketItem }
           setBucketItems((prev) =>
-            prev.map((it) => (it.id === payload.new.id ? payload.new : it))
+            prev.map((it) => (it.id === p.new.id ? p.new : it))
           );
         }
       )
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'DELETE', schema: 'public', table: 'bucket_list' },
-        (payload: { old: { id: number } }) => {
-          setBucketItems((prev) => prev.filter((it) => it.id !== payload.old.id));
+        (payload: unknown) => {
+          const p = payload as { old: { id: number } }
+          setBucketItems((prev) => prev.filter((it) => it.id !== p.old.id));
         }
       )
       .subscribe();
@@ -283,24 +274,27 @@ export default function Home() {
     const memoriesChannel = supabase
       .channel('memories-updates')
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'memories' },
-        (payload: { new: Memory }) => {
-          setMemories((prev) => [payload.new, ...prev]);
+        (payload: unknown) => {
+          const p = payload as { new: Memory }
+          setMemories((prev) => [p.new, ...prev]);
         }
       )
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'UPDATE', schema: 'public', table: 'memories' },
-        (payload: { new: Memory }) => {
-          setMemories((prev) => prev.map(m => m.id === payload.new.id ? payload.new : m));
+        (payload: unknown) => {
+          const p = payload as { new: Memory }
+          setMemories((prev) => prev.map(m => m.id === p.new.id ? p.new : m));
         }
       )
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'DELETE', schema: 'public', table: 'memories' },
-        (payload: { old: { id: number } }) => {
-          setMemories((prev) => prev.filter(m => m.id !== payload.old.id));
+        (payload: unknown) => {
+          const p = payload as { old: { id: number } }
+          setMemories((prev) => prev.filter(m => m.id !== p.old.id));
         }
       )
       .subscribe();
@@ -602,10 +596,11 @@ export default function Home() {
     const logsChannel = supabase
       .channel('mood-logs')
       .on(
-        'postgres_changes' as any,
+        'postgres_changes' as 'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'mood_logs' },
-        (payload: { new: { content: string; user_name: string; created_at: string } }) => {
-          setLogs((prev) => [payload.new, ...prev].slice(0, 10));
+        (payload: unknown) => {
+          const p = payload as { new: { content: string; user_name: string; created_at: string } }
+          setLogs((prev) => [p.new, ...prev].slice(0, 10));
         }
       )
       .subscribe();
@@ -696,7 +691,7 @@ export default function Home() {
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
           navigator.vibrate([200, 100, 200]);
         }
-      } catch (e) {
+      } catch {
         console.log('Vibrate not supported');
       }
 

@@ -5,6 +5,18 @@ import webpush from "npm:web-push"
 const VAPID_PUBLIC_KEY = Deno.env.get('VAPID_PUBLIC_KEY')!
 const VAPID_PRIVATE_KEY = Deno.env.get('VAPID_PRIVATE_KEY')!
 
+type PushSubscriptionRow = {
+  id: number
+  subscription: {
+    endpoint: string
+    keys: {
+      p256dh: string
+      auth: string
+    }
+  }
+  user_name?: string
+}
+
 webpush.setVapidDetails(
   'mailto:your-email@example.com',
   VAPID_PUBLIC_KEY,
@@ -14,7 +26,7 @@ webpush.setVapidDetails(
 serve(async (req) => {
   try {
     const payload = await req.json()
-    const { record, table, type } = payload
+    const { record, table } = payload
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
@@ -48,16 +60,17 @@ serve(async (req) => {
       url
     })
 
-    const sendPromises = subscriptions.map((sub: any) => {
+    const sendPromises = subscriptions.map((sub: PushSubscriptionRow) => {
       // Không gửi cho chính mình nếu biết user_name (tùy chọn)
       if (record.created_by === sub.user_name || record.user_name === sub.user_name) {
          // return Promise.resolve(); 
       }
       
       return webpush.sendNotification(sub.subscription, notificationPayload)
-        .catch((err: any) => {
+        .catch((err: unknown) => {
           console.error('Error sending push:', err)
-          if (err.statusCode === 410) {
+          const statusCode = (err as { statusCode?: number }).statusCode
+          if (statusCode === 410) {
             // Subscription has expired or is no longer valid
             return supabase.from('push_subscriptions').delete().eq('id', sub.id)
           }
@@ -67,7 +80,8 @@ serve(async (req) => {
     await Promise.all(sendPromises)
 
     return new Response('Notifications sent', { status: 200 })
-  } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message || String(error) }), { status: 500, headers: { 'Content-Type': 'application/json' } })
+  } catch (error: unknown) {
+    const message = (error as { message?: string }).message || String(error)
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: { 'Content-Type': 'application/json' } })
   }
 })
